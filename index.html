@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="e40n6F0FFjK2op0k3o9GXqvbZYVJtJRMv4tWf7CHuGA" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Rekha World - Page 2 & Videos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        @media (min-width: 1025px) {
+            html {
+                scrollbar-width: none;
+            }
+            ::-webkit-scrollbar { display: none; width: 0; height: 0; }
+        }
+
+        body, html {
+            width: 100%;
+            min-height: 100%;
+            overflow-x: hidden;
+            font-family: 'DM Sans', sans-serif;
+            background-color: #f7f2ea;
+        }
+
+        /* Applied while the TV or projector screen is expanded to fullscreen,
+           so the page scrollbar disappears (and the exact scroll position
+           comes back untouched when you exit — no jump to the top). */
+        html.lock-scroll {
+            overflow: hidden !important;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* old Edge/IE */
+        }
+        html.lock-scroll::-webkit-scrollbar { display: none; } /* Chrome/Safari/webkit */
+        body.lock-scroll {
+            overflow: hidden !important;
+            width: 100%;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        body.lock-scroll::-webkit-scrollbar { display: none; }
+
+        .reveal { opacity: 1; transform: none; transition: opacity 0.8s ease, transform 0.8s ease; }
+        @media (prefers-reduced-motion: no-preference) {
+            .reveal:not(.visible) { opacity: 0; }
+            .reveal.visible { opacity: 1; }
+        }
+
+        .navbar {
+            position: absolute; top: 0; left: 0; width: 100%;
+            display: flex; justify-content: flex-end; align-items: center;
+            padding: 10px 60px; z-index: 100;
+            background: rgba(247, 242, 234, 0.7);
+            backdrop-filter: blur(8px);
+        }
+        .nav-links { display: flex; gap: 35px; list-style: none; }
+        .nav-links a {
+            text-decoration: none; font-size: 0.72rem; font-weight: 500;
+            letter-spacing: 2.5px; text-transform: uppercase;
+            color: #5a4f47; transition: color 0.3s ease;
+        }
+        .nav-links a:hover, .nav-links a.active { color: #8b6b32; }
+
+        .hamburger { display: none; }
+        .mob-nav-drawer {
+            display: flex; flex-direction: column; justify-content: center;
+            position: fixed; inset: 0; z-index: 500;
+            background-image: linear-gradient(rgba(247, 242, 234, 0.55), rgba(247, 242, 234, 0.55)), url('Gallery/Photos/mobile-nav-bg.jpg');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+            padding: 80px 30px 48px;
+            transform: translateX(100%);
+            transition: transform 0.5s cubic-bezier(.7,0,.3,1);
+            pointer-events: none;
+        }
+        .mob-nav-drawer.open { transform: translateX(0); pointer-events: all; }
+
+        .page2-container {
+            position: relative; width: 100vw; min-height: 100vh;
+            background-image: url('Gallery/Photos/page2-bg.png');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+            display: flex; align-items: center; justify-content: flex-end;
+            padding: 140px 8% 60px;
+        }
+
+        .content-panel { max-width: 550px; text-align: left; z-index: 10; }
+
+        .panel-eyebrow {
+            font-size: 0.75rem; font-weight: 500; letter-spacing: 4px;
+            text-transform: uppercase; color: #8b6b32; margin-bottom: 12px;
+        }
+
+        .sky-mobile-eyebrow { display: none; }
+
+        h1 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: clamp(2.5rem, 4.5vw, 4rem);
+            font-weight: 300; color: #2c221e; line-height: 1.15; margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.05rem; line-height: 1.8; color: #5a4f47;
+            font-weight: 300; margin-bottom: 16px;
+        }
+        .content-panel p:last-of-type { margin-bottom: 30px; }
+
+        .audio-icon-btn {
+            position: absolute; right: 8%; bottom: 12px;
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 50px; height: 50px; background: transparent;
+            border: 1px solid #8b6b32; border-radius: 50%;
+            color: #8b6b32; font-size: 1.1rem; cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 107, 50, 0.1); z-index: 10;
+        }
+        .audio-icon-btn:hover {
+            background: #8b6b32; color: #fff;
+            box-shadow: 0 6px 20px rgba(139, 107, 50, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .photos-section {
+            position: relative; width: 100vw; height: 100vh;
+            overflow: hidden; background: #1a1512;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Fallback "fullscreen" for browsers (mainly mobile) that block or
+           don't support requestFullscreen() on this element. Pins the section
+           over everything, edge to edge, including behind any notch/home-bar
+           safe areas. */
+        .manual-fullscreen {
+            position: fixed !important; inset: 0 !important;
+            width: 100vw !important; height: 100vh !important; height: 100dvh !important;
+            z-index: 99999 !important; margin: 0 !important;
+        }
+
+        .tv-scene {
+            position: relative; width: 100%; height: 100%;
+            background-image: url('Gallery/Photos/tv-bg.png');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+        }
+
+        .tv-screen {
+            position: absolute; overflow: hidden; cursor: pointer;
+            transform-origin: top left; background: #000;
+        }
+
+        .tv-screen.tv-fullscreen {
+            position: fixed; top: 0; left: 0;
+            width: 100vw; width: 100dvw;
+            height: 100vh; height: 100dvh; z-index: 9999;
+        }
+
+        .tv-view-overlay {
+            position: absolute; inset: 0; z-index: 4;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 16px; background: rgba(20, 15, 10, 0.12);
+            cursor: pointer; transition: background 0.5s ease;
+        }
+        .tv-view-overlay:hover { background: rgba(20, 15, 10, 0.32); }
+
+        .tv-power-orb {
+            position: relative; width: 48px; height: 48px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+
+        .tv-power-ring {
+            position: absolute; inset: 0; border-radius: 50%;
+            border: 1px solid rgba(232, 207, 160, 0.75);
+            animation: tvRingPulse 2.6s ease-out infinite;
+        }
+        .tv-power-ring.tv-ring-delay { animation-delay: 1.3s; }
+
+        @keyframes tvRingPulse {
+            0%   { transform: scale(0.55); opacity: 0.9; }
+            75%  { transform: scale(2.1); opacity: 0; }
+            100% { transform: scale(2.1); opacity: 0; }
+        }
+
+        .tv-power-icon {
+            position: relative; z-index: 2;
+            transform: translateX(2px) scale(1);
+            transition: transform 0.4s ease;
+            filter: drop-shadow(0 0 8px rgba(232, 207, 160, 0.85));
+        }
+        .tv-view-overlay:hover .tv-power-icon { transform: translateX(2px) scale(1.18); }
+
+        .tv-power-label {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-style: italic; font-weight: 400; font-size: 1rem;
+            letter-spacing: 1.5px; color: #f7f2ea;
+            opacity: 0; transform: translateY(8px);
+            transition: opacity 0.45s ease, transform 0.45s ease;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7); white-space: nowrap;
+        }
+        .tv-view-overlay:hover .tv-power-label { opacity: 1; transform: translateY(0); }
+
+        .tv-close-btn {
+            position: fixed; top: 24px; right: 32px;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: rgba(20, 15, 10, 0.5); color: #f7f2ea;
+            border: 1px solid rgba(247, 242, 234, 0.4);
+            font-size: 1.3rem; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 10000; opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .tv-close-btn.visible { opacity: 1; pointer-events: auto; }
+
+        .tv-fullscreen-btn {
+            position: fixed; top: 24px; right: 88px;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: rgba(20, 15, 10, 0.5); color: #f7f2ea;
+            border: 1px solid rgba(247, 242, 234, 0.4);
+            font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 10000; opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease, background 0.3s ease;
+        }
+        .tv-fullscreen-btn:hover { background: rgba(20, 15, 10, 0.75); }
+        .tv-fullscreen-btn.visible { opacity: 1; pointer-events: auto; }
+
+        .carousel-slide {
+            position: absolute; inset: 0; opacity: 0;
+            transition: opacity 1.4s ease; z-index: 1; overflow: hidden;
+        }
+        .slide-fg {
+            position: absolute; inset: 0;
+            background-size: contain; background-position: center; background-repeat: no-repeat;
+        }
+        .carousel-slide.active { opacity: 1; z-index: 2; }
+
+        .carousel-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(20, 15, 10, 0.15) 0%, rgba(20, 15, 10, 0.25) 45%, rgba(20, 15, 10, 0.75) 100%);
+            z-index: 9998; opacity: 0; pointer-events: none;
+            transition: opacity 0.5s ease 0.2s;
+        }
+        .carousel-overlay.visible { opacity: 1; pointer-events: auto; }
+
+        .carousel-content {
+            position: fixed; left: 8%; bottom: 165px; z-index: 10000;
+            color: #f7f2ea; max-width: 600px; opacity: 0; pointer-events: none;
+            transition: opacity 0.5s ease 0.2s;
+        }
+        .carousel-content.visible { opacity: 1; pointer-events: auto; }
+        .carousel-content .panel-eyebrow { color: #e8cfa0; }
+
+        .carousel-title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: clamp(2.2rem, 4.5vw, 3.8rem); font-weight: 300;
+            line-height: 1.15; transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .carousel-progress {
+            position: fixed; left: 8%; bottom: 118px; z-index: 10000;
+            display: flex; align-items: center; gap: 14px;
+            color: rgba(247, 242, 234, 0.85); font-size: 0.75rem;
+            letter-spacing: 2px; opacity: 0; pointer-events: none;
+            transition: opacity 0.5s ease 0.2s;
+        }
+        .carousel-progress.visible { opacity: 1; pointer-events: auto; }
+
+        .progress-bar-track {
+            width: 160px; height: 2px; background: rgba(247, 242, 234, 0.25);
+            position: relative; overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            position: absolute; left: 0; top: 0; height: 100%;
+            background: #e8cfa0; width: 11%; transition: width 0.5s ease;
+        }
+
+        .thumb-strip {
+            position: fixed; bottom: 30px; left: 8%; right: 8%;
+            display: flex; gap: 12px; overflow-x: auto; z-index: 10000;
+            scrollbar-width: none; padding-bottom: 4px;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.5s ease 0.2s;
+        }
+        .thumb-strip.visible { opacity: 1; pointer-events: auto; }
+        .thumb-strip::-webkit-scrollbar { display: none; }
+
+        .thumb {
+            flex: 0 0 auto; width: 74px; height: 52px;
+            border-radius: 8px; overflow: hidden; cursor: pointer;
+            opacity: 0.5; transform: scale(0.9);
+            transition: all 0.4s ease; border: 2px solid transparent;
+        }
+        .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .thumb.active { opacity: 1; transform: scale(1.15); border-color: #e8cfa0; }
+
+        .videos-section {
+            position: relative; width: 100vw; height: 100vh;
+            overflow: hidden; background: #1a1512;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .projector-scene {
+            position: relative; width: 100%; height: 100%;
+            background-image: url('Gallery/Photos/projector-room-bg.png');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+        }
+
+        .projector-screen {
+            position: absolute; overflow: hidden; cursor: pointer;
+            transform-origin: top left; background: #000;
+        }
+
+        .projector-screen.proj-fullscreen {
+            position: fixed; top: 0; left: 0;
+            width: 100vw; width: 100dvw;
+            height: 100vh; height: 100dvh; z-index: 9999;
+        }
+
+        .proj-view-overlay {
+            position: absolute; inset: 0; z-index: 4;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 16px; background: rgba(20, 15, 10, 0.12);
+            cursor: pointer; transition: background 0.5s ease;
+        }
+        .proj-view-overlay:hover { background: rgba(20, 15, 10, 0.32); }
+
+        .proj-power-orb {
+            position: relative; width: 48px; height: 48px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+
+        .proj-power-ring {
+            position: absolute; inset: 0; border-radius: 50%;
+            border: 1px solid rgba(232, 207, 160, 0.75);
+            animation: projRingPulse 2.6s ease-out infinite;
+        }
+        .proj-power-ring.proj-ring-delay { animation-delay: 1.3s; }
+
+        @keyframes projRingPulse {
+            0%   { transform: scale(0.55); opacity: 0.9; }
+            75%  { transform: scale(2.1); opacity: 0; }
+            100% { transform: scale(2.1); opacity: 0; }
+        }
+
+        .proj-power-icon {
+            position: relative; z-index: 2;
+            transform: translateX(2px) scale(1);
+            transition: transform 0.4s ease;
+            filter: drop-shadow(0 0 8px rgba(232, 207, 160, 0.85));
+        }
+        .proj-view-overlay:hover .proj-power-icon { transform: translateX(2px) scale(1.18); }
+
+        .proj-power-label {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-style: italic; font-weight: 400; font-size: 1rem;
+            letter-spacing: 1.5px; color: #f7f2ea;
+            opacity: 0; transform: translateY(8px);
+            transition: opacity 0.45s ease, transform 0.45s ease;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7); white-space: nowrap;
+        }
+        .proj-view-overlay:hover .proj-power-label { opacity: 1; transform: translateY(0); }
+
+        .proj-close-btn {
+            position: fixed; top: 24px; right: 32px;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: rgba(20, 15, 10, 0.5); color: #f7f2ea;
+            border: 1px solid rgba(247, 242, 234, 0.4);
+            font-size: 1.3rem; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 10000; opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .proj-close-btn.visible { opacity: 1; pointer-events: auto; }
+
+        .video-slide {
+            position: absolute; inset: 0; opacity: 0;
+            transition: opacity 1.4s ease; z-index: 1; overflow: hidden;
+            display: flex; align-items: center; justify-content: center; background: #000;
+        }
+        .video-slide.active { opacity: 1; z-index: 2; }
+        .video-slide video {
+            width: 100%; height: 100%; object-fit: contain; outline: none;
+        }
+
+        .video-overlay-bg {
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(20, 15, 10, 0.15) 0%, rgba(20, 15, 10, 0.25) 45%, rgba(20, 15, 10, 0.75) 100%);
+            z-index: 9998; opacity: 0; pointer-events: none;
+            transition: opacity 0.5s ease 0.2s;
+        }
+        .video-overlay-bg.visible { opacity: 1; pointer-events: auto; }
+
+        .video-content-info {
+            position: fixed; left: 8%; bottom: 155px; z-index: 10000;
+            color: #f7f2ea; max-width: 600px;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.5s ease 0.2s;
+        }
+        .video-content-info.visible { opacity: 1; pointer-events: auto; }
+        .video-content-info .panel-eyebrow { color: #e8cfa0; }
+
+        .video-title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 300;
+            line-height: 1.15; transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .video-seek-wrap {
+            position: fixed; left: 50%; bottom: 92px; transform: translateX(-50%);
+            width: min(560px, 78vw); display: flex; align-items: center; gap: 12px;
+            z-index: 10000; opacity: 0; pointer-events: none;
+            transition: opacity 0.5s ease 0.2s;
+        }
+        .video-seek-wrap.visible { opacity: 1; pointer-events: auto; }
+
+        .video-time {
+            font-size: 0.7rem; letter-spacing: 1px;
+            color: rgba(247, 242, 234, 0.85);
+            min-width: 34px; text-align: center; flex-shrink: 0;
+        }
+
+        .video-seek-track {
+            position: relative; flex: 1; height: 4px;
+            background: rgba(247, 242, 234, 0.25); border-radius: 2px;
+            cursor: pointer; touch-action: none;
+        }
+        .video-seek-track::before {
+            content: ''; position: absolute;
+            left: 0; right: 0; top: -8px; bottom: -8px;
+        }
+
+        .video-seek-fill {
+            position: absolute; left: 0; top: 0; height: 100%; width: 0%;
+            background: #e8cfa0; border-radius: 2px; pointer-events: none;
+        }
+
+        .video-seek-handle {
+            position: absolute; top: 50%; left: 0%;
+            width: 12px; height: 12px; background: #f7f2ea;
+            border: 2px solid #8b6b32; border-radius: 50%;
+            transform: translate(-50%, -50%); pointer-events: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        body.hide-video-ui .video-seek-wrap,
+        body.hide-video-ui .video-controls-bar,
+        body.hide-video-ui .proj-close-btn {
+            opacity: 0 !important; pointer-events: none !important;
+        }
+        body.hide-video-ui { cursor: none; }
+        body.hide-video-text .video-content-info {
+            opacity: 0 !important; pointer-events: none !important;
+        }
+
+        .video-controls-bar {
+            position: fixed; left: 50%; bottom: 34px; transform: translateX(-50%);
+            display: flex; align-items: center; gap: 16px; z-index: 10000;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.5s ease 0.2s;
+        }
+        .video-controls-bar.visible { opacity: 1; pointer-events: auto; }
+
+        .video-ctrl-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 38px; height: 38px;
+            background: rgba(0, 0, 0, 0.32);
+            backdrop-filter: blur(6px);
+            border: none;
+            border-radius: 50%; color: #f7f2ea; font-size: 0.7rem;
+            cursor: pointer; transition: background 0.25s ease, transform 0.25s ease;
+        }
+        .video-ctrl-btn.video-ctrl-play {
+            width: 46px; height: 46px; font-size: 0.85rem;
+            background: rgba(0, 0, 0, 0.45);
+        }
+        .video-ctrl-btn:hover {
+            background: rgba(0, 0, 0, 0.5); transform: translateY(-2px);
+        }
+
+        @media (max-width: 1024px) {
+            .navbar { display: none !important; }
+
+            .hamburger {
+                display: flex; flex-direction: column; align-items: center; justify-content: center;
+                gap: 5px; width: 40px; height: 40px; border-radius: 50%;
+                position: fixed; top: 16px; right: 16px; z-index: 510;
+                background: #f7f2ea; border: 1px solid #8b6b32;
+                cursor: pointer; padding: 0; transition: background 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            }
+            .hamburger:active { background: rgba(139, 107, 50, 0.15); }
+            .ham-bar {
+                width: 18px; height: 1px; background: #2c221e;
+                transition: transform 0.35s cubic-bezier(.7,0,.3,1), opacity 0.25s; transform-origin: center;
+            }
+            .hamburger.open .ham-bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+            .hamburger.open .ham-bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+            .hamburger.open .ham-bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+            .mob-nav-drawer-link {
+                display: block; font-family: 'Cormorant Garamond', Georgia, serif;
+                font-size: clamp(2.1rem, 9vw, 2.9rem);
+                font-weight: 600; line-height: 1.2; color: #2c221e; text-decoration: none;
+                padding: 0.22em 0; border-bottom: 1px solid rgba(139, 107, 50, 0.2);
+                transition: color 0.25s ease;
+            }
+            .mob-nav-drawer-link:last-of-type { border-bottom: none; }
+            .mob-nav-drawer-link:active { color: #8b6b32; }
+            .mob-nav-drawer-num {
+                font-family: 'DM Sans', sans-serif; font-size: 0.6rem; font-weight: 400;
+                color: #8b6b32; letter-spacing: 2px; vertical-align: super; margin-right: 10px;
+            }
+            .mob-nav-drawer-foot {
+                position: absolute; bottom: 36px; left: 30px; right: 30px;
+                font-family: 'DM Sans', sans-serif; font-size: 0.6rem; font-weight: 400;
+                letter-spacing: 3px; text-transform: uppercase; color: #8b6b32;
+            }
+
+            .page2-container {
+                position: relative; width: 100vw;
+                height: 100vh; height: 100dvh;
+                background-image: url('Gallery/Photos/mobile-hero.jpg');
+                background-size: cover; background-position: center top; background-repeat: no-repeat;
+                display: flex; flex-direction: column; justify-content: flex-end;
+                padding: 0 16px 34px 16px;
+            }
+
+            .sky-mobile-eyebrow {
+                display: block; position: absolute; top: 22px; left: 0; width: 100%;
+                text-align: center; font-size: 0.56rem; font-weight: 600;
+                letter-spacing: 2px; text-transform: uppercase; color: #8b6b32;
+                z-index: 10; text-shadow: 0 1px 4px rgba(247, 242, 234, 0.9);
+            }
+
+            .content-panel .panel-eyebrow { display: none; }
+            .content-panel {
+                position: relative; width: 100%; max-width: 100%;
+                background: transparent; backdrop-filter: none;
+                padding: 0 6px; border: none; box-shadow: none;
+                text-align: left; z-index: 10; margin-bottom: 22px;
+            }
+            .content-panel h1 {
+                font-size: 1.55rem; font-weight: 400; font-style: italic;
+                margin-bottom: 12px; padding-bottom: 12px;
+                line-height: 1.28; letter-spacing: 0.3px; color: #2c221e;
+                text-shadow: 0 2px 10px rgba(247, 242, 234, 0.55);
+                position: relative;
+            }
+            .content-panel h1::after {
+                content: ''; position: absolute; left: 1px; bottom: 0;
+                width: 42px; height: 1.5px;
+                background: linear-gradient(90deg, #8b6b32, rgba(139, 107, 50, 0));
+            }
+            .content-panel p {
+                font-size: 0.63rem; line-height: 1.5;
+                margin-bottom: 14px; color: #5a4f47;
+            }
+            .content-panel p:last-of-type { margin-bottom: 0; }
+
+            .audio-icon-btn {
+                position: absolute; right: 14px; bottom: 14px; top: auto;
+                width: 36px; height: 36px; font-size: 0.75rem;
+                background: #f7f2ea; border-color: #8b6b32;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }
+
+            .tv-scene {
+                background-image: url('Gallery/Photos/mobile-tv-bg.jpg');
+                background-size: cover; background-position: center;
+            }
+            .projector-scene {
+                background-image: url('Gallery/Photos/mobile-projector-bg.png');
+                background-size: cover; background-position: center;
+            }
+
+            .photos-section, .videos-section { height: 100vh; height: 100dvh; }
+            .carousel-content { left: 6%; right: 6%; bottom: 130px; max-width: 100%; }
+            .carousel-progress { left: 6%; bottom: 95px; }
+            .video-content-info { left: 6%; right: 6%; bottom: 115px; max-width: 100%; }
+            .video-seek-wrap { bottom: 62px; width: 84vw; }
+            .video-controls-bar { bottom: 18px; gap: 12px; }
+            .video-ctrl-btn { width: 34px; height: 34px; font-size: 0.6rem; }
+            .video-ctrl-btn.video-ctrl-play { width: 40px; height: 40px; font-size: 0.75rem; }
+            .thumb-strip { left: 6%; right: 6%; bottom: 20px; }
+            .thumb { width: 56px; height: 40px; }
+            #video-fullscreen-btn, .tv-fullscreen-btn { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="hamburger" id="mob-ham" aria-label="Open menu">
+        <div class="ham-bar"></div>
+        <div class="ham-bar"></div>
+        <div class="ham-bar"></div>
+    </button>
+
+    <div class="mob-nav-drawer" id="mob-nav-drawer" role="navigation" aria-label="Main menu">
+        <a href="Untitled-1.html" class="mob-nav-drawer-link" data-mob-nav-close><span class="mob-nav-drawer-num">01</span>Welcome</a>
+        <a href="#photos" class="mob-nav-drawer-link" data-mob-nav-close><span class="mob-nav-drawer-num">02</span>Photos</a>
+        <a href="#videos" class="mob-nav-drawer-link" data-mob-nav-close><span class="mob-nav-drawer-num">03</span>Videos</a>
+        <div class="mob-nav-drawer-foot">Rekha World</div>
+    </div>
+
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="Untitled-1.html" class="active">Welcome</a></li>
+            <li><a href="#photos">Photos</a></li>
+            <li><a href="#videos">Videos</a></li>
+        </ul>
+    </nav>
+
+    <div class="page2-container">
+        <audio id="bg-audio" loop>
+            <source src="Gallery/Videos/devadeva.mp3" type="audio/mp3">
+            Your browser does not support the audio element.
+        </audio>
+
+        <div class="sky-mobile-eyebrow">Welcome to the world of Rekha</div>
+
+        <div class="content-panel reveal">
+            <p class="panel-eyebrow">Welcome to the world of Rekha</p>
+            <h1>A Celebration of Grace &amp; Elegance</h1>
+            <p>There are few people in this world whose very presence brings an immediate sense of calm, warmth, and deep reassurance. For me, that person is my mother, Rekha Rani Kalita Das.</p>
+            <p>Born on the 17th of September, 1977, she has spent her life not only guiding others through the complexities of the human mind as a psychologist and shaping young minds as a teacher, but anchoring our family with unmatched grace, patience, and boundless love.</p>
+            <p>A truly sweet and beautiful soul inside and out, her kindness leaves a lasting mark on everyone fortunate enough to know her. She is the quiet strength behind our hardest days and the brightest light in our happiest moments. Rekha World is our way of honoring that extraordinary heart—a celebration of a life dedicated to healing, understanding, and unconditional love.</p>
+        </div>
+
+        <button class="audio-icon-btn" id="audio-btn" onclick="toggleAudio()" title="Play / Pause Music">&#9654;</button>
+    </div>
+
+    <section id="photos" class="photos-section">
+        <div class="tv-scene reveal" id="tv-scene">
+            <div class="tv-screen" id="tv-screen">
+                <div class="carousel-slide active" data-title="A Winter Evening in Gangtok"><div class="slide-fg" style="background-image:url('Gallery/Photos/074_-_Copy.JPG')"></div></div>
+                <div class="carousel-slide" data-title="A Quiet Afternoon"><div class="slide-fg" style="background-image:url('Gallery/Photos/20210307_115922.jpg')"></div></div>
+                <div class="carousel-slide" data-title="Dressed for a Celebration"><div class="slide-fg" style="background-image:url('Gallery/Photos/20241121_212238.jpg')"></div></div>
+                <div class="carousel-slide" data-title="Golden Hour with the Children"><div class="slide-fg" style="background-image:url('Gallery/Photos/DSCN0151.JPG')"></div></div>
+                <div class="carousel-slide" data-title="At Home, At Ease"><div class="slide-fg" style="background-image:url('Gallery/Photos/EJMLE0219.JPG')"></div></div>
+                <div class="carousel-slide" data-title="A Snowy Adventure Together"><div class="slide-fg" style="background-image:url('Gallery/Photos/IMG_3386.jpg')"></div></div>
+                <div class="carousel-slide" data-title="Grace on Every Step"><div class="slide-fg" style="background-image:url('Gallery/Photos/IMG_20221125_155230_1.jpg')"></div></div>
+                <div class="carousel-slide" data-title="Timeless Elegance"><div class="slide-fg" style="background-image:url('Gallery/Photos/IMG-20211130-WA0056.jpg')"></div></div>
+                <div class="carousel-slide" data-title="A Festive Evening"><div class="slide-fg" style="background-image:url('Gallery/Photos/IMG-20211210-WA0064.jpg')"></div></div>
+                <div class="carousel-slide" data-title="Radiant in Blue"><div class="slide-fg" style="background-image:url('Gallery/Photos/IMG-20211214-WA0061.jpg')"></div></div>
+                <div class="carousel-slide" data-title="Together, Always"><div class="slide-fg" style="background-image:url('Gallery/Photos/Screenshot_2020-06-19-07-55-23-1.png')"></div></div>
+                <div class="carousel-slide" data-title="Christmas Warmth"><div class="slide-fg" style="background-image:url('Gallery/Photos/upscalemedia-transformed.jpeg')"></div></div>
+                <div class="carousel-slide" data-title="A Walk Among the Trees"><div class="slide-fg" style="background-image:url('Gallery/Photos/WhatsApp_Image_2022-12-27_at_9_48_02_PM__1_.jpeg')"></div></div>
+                <div class="carousel-slide" data-title="Mother & Daughter"><div class="slide-fg" style="background-image:url('Gallery/Photos/WhatsApp_Image_2022-12-27_at_9_48_36_PM__1_.jpeg')"></div></div>
+                <div class="carousel-slide" data-title="Surrounded by Green"><div class="slide-fg" style="background-image:url('Gallery/Photos/WhatsApp_Image_2024-09-16_at_22_32_38_d9b44276.jpg')"></div></div>
+                <div class="carousel-slide" data-title="A Road Well Walked"><div class="slide-fg" style="background-image:url('Gallery/Photos/WhatsApp_Image_2025-01-04_at_23_00_08_e909fd66.jpg')"></div></div>
+
+                <div class="tv-view-overlay" id="tv-view-overlay">
+                    <div class="tv-power-orb">
+                        <span class="tv-power-ring"></span>
+                        <span class="tv-power-ring tv-ring-delay"></span>
+                        <svg class="tv-power-icon" width="20" height="20" viewBox="0 0 24 24">
+                            <polygon points="7,4 20,12 7,20" fill="#f7f2ea"/>
+                        </svg>
+                    </div>
+                    <span class="tv-power-label">Step Into the Memories</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="tv-close-btn" id="tv-close-btn" title="Close">&times;</button>
+        <button class="tv-fullscreen-btn" id="tv-fullscreen-btn" title="Full Screen">&#9974;</button>
+        <div class="carousel-overlay" id="carousel-overlay-el"></div>
+        <div class="carousel-content" id="carousel-content-el">
+            <p class="panel-eyebrow">A Glimpse Into Her World</p>
+            <h2 class="carousel-title" id="carousel-title">A Winter Evening in Gangtok</h2>
+        </div>
+        <div class="carousel-progress" id="carousel-progress-el">
+            <span id="progress-current">01</span>
+            <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="progress-bar-fill"></div>
+            </div>
+            <span id="progress-total">16</span>
+        </div>
+        <div class="thumb-strip" id="thumb-strip">
+            <div class="thumb active" data-index="0"><img src="Gallery/Photos/074_-_Copy.JPG" alt="Thumbnail 1"></div>
+            <div class="thumb" data-index="1"><img src="Gallery/Photos/20210307_115922.jpg" alt="Thumbnail 2"></div>
+            <div class="thumb" data-index="2"><img src="Gallery/Photos/20241121_212238.jpg" alt="Thumbnail 3"></div>
+            <div class="thumb" data-index="3"><img src="Gallery/Photos/DSCN0151.JPG" alt="Thumbnail 4"></div>
+            <div class="thumb" data-index="4"><img src="Gallery/Photos/EJMLE0219.JPG" alt="Thumbnail 5"></div>
+            <div class="thumb" data-index="5"><img src="Gallery/Photos/IMG_3386.jpg" alt="Thumbnail 6"></div>
+            <div class="thumb" data-index="6"><img src="Gallery/Photos/IMG_20221125_155230_1.jpg" alt="Thumbnail 7"></div>
+            <div class="thumb" data-index="7"><img src="Gallery/Photos/IMG-20211130-WA0056.jpg" alt="Thumbnail 8"></div>
+            <div class="thumb" data-index="8"><img src="Gallery/Photos/IMG-20211210-WA0064.jpg" alt="Thumbnail 9"></div>
+            <div class="thumb" data-index="9"><img src="Gallery/Photos/IMG-20211214-WA0061.jpg" alt="Thumbnail 10"></div>
+            <div class="thumb" data-index="10"><img src="Gallery/Photos/Screenshot_2020-06-19-07-55-23-1.png" alt="Thumbnail 11"></div>
+            <div class="thumb" data-index="11"><img src="Gallery/Photos/upscalemedia-transformed.jpeg" alt="Thumbnail 12"></div>
+            <div class="thumb" data-index="12"><img src="Gallery/Photos/WhatsApp_Image_2022-12-27_at_9_48_02_PM__1_.jpeg" alt="Thumbnail 13"></div>
+            <div class="thumb" data-index="13"><img src="Gallery/Photos/WhatsApp_Image_2022-12-27_at_9_48_36_PM__1_.jpeg" alt="Thumbnail 14"></div>
+            <div class="thumb" data-index="14"><img src="Gallery/Photos/WhatsApp_Image_2024-09-16_at_22_32_38_d9b44276.jpg" alt="Thumbnail 15"></div>
+            <div class="thumb" data-index="15"><img src="Gallery/Photos/WhatsApp_Image_2025-01-04_at_23_00_08_e909fd66.jpg" alt="Thumbnail 16"></div>
+        </div>
+    </section>
+
+
+    <section id="videos" class="videos-section">
+        <div class="projector-scene reveal" id="projector-scene">
+            <div class="projector-screen" id="projector-screen">
+
+                <div class="video-slide active" data-title="Birthday Celebrations, 2023–2024">
+                    <video class="cine-video" playsinline preload="auto">
+                        <source src="Gallery/Videos/MOM_Birthady_2023-2024.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="video-slide" data-title="Birthday Celebrations, 2024–25">
+                    <video class="cine-video" playsinline preload="auto">
+                        <source src="Gallery/Videos/Mom_birthday_2024-25.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="video-slide" data-title="A Trip Back to the '90s">
+                    <video class="cine-video" playsinline preload="auto">
+                        <source src="Gallery/Videos/Rekha_90s_Trend.mp4" type="video/mp4">
+                    </video>
+                </div>
+
+                <div class="proj-view-overlay" id="proj-view-overlay">
+                    <div class="proj-power-orb">
+                        <span class="proj-power-ring"></span>
+                        <span class="proj-power-ring proj-ring-delay"></span>
+                        <svg class="proj-power-icon" width="20" height="20" viewBox="0 0 24 24">
+                            <polygon points="7,4 20,12 7,20" fill="#f7f2ea"/>
+                        </svg>
+                    </div>
+                    <span class="proj-power-label">Step Into the Screening</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="proj-close-btn" id="proj-close-btn" title="Close">&times;</button>
+        <div class="video-overlay-bg" id="video-overlay-bg-el"></div>
+        <div class="video-content-info" id="video-content-info-el">
+            <p class="panel-eyebrow">Moments in Motion</p>
+            <h2 class="video-title" id="video-title-el">Birthday Celebrations, 2023–2024</h2>
+        </div>
+        <div class="video-seek-wrap" id="video-seek-wrap">
+            <span class="video-time" id="video-time-current">0:00</span>
+            <div class="video-seek-track" id="video-seek-track">
+                <div class="video-seek-fill" id="video-seek-fill"></div>
+                <div class="video-seek-handle" id="video-seek-handle"></div>
+            </div>
+            <span class="video-time" id="video-time-total">0:00</span>
+        </div>
+        <div class="video-controls-bar" id="video-controls-bar">
+            <button class="video-ctrl-btn" id="video-prev-btn" title="Previous Video">&#9198;</button>
+            <button class="video-ctrl-btn video-ctrl-play" id="video-playpause-btn" title="Play / Pause">&#9654;</button>
+            <button class="video-ctrl-btn" id="video-next-btn" title="Next Video">&#9197;</button>
+            <button class="video-ctrl-btn" id="video-fullscreen-btn" title="Full Screen">&#9974;</button>
+        </div>
+    </section>
+
+
+    <script>
+        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+        window.addEventListener('load', () => window.scrollTo(0, 0));
+        /* iOS/Chrome sometimes restore the page from their own back/forward
+           cache on refresh with an old zoom level still attached - "load"
+           never fires for that case, only "pageshow" does. */
+        window.addEventListener('pageshow', () => { window.scrollTo(0, 0); });
+        window.scrollTo(0, 0);
+
+        const audio = document.getElementById('bg-audio');
+        const audioBtn = document.getElementById('audio-btn');
+
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.play();
+                audioBtn.innerHTML = "&#10074;&#10074;";
+                audioBtn.title = "Pause Music";
+            } else {
+                audio.pause();
+                audioBtn.innerHTML = "&#9654;";
+                audioBtn.title = "Play Music";
+            }
+        }
+
+        const slides = document.querySelectorAll('.carousel-slide');
+        const thumbs = document.querySelectorAll('.thumb');
+        const titleEl = document.getElementById('carousel-title');
+        const progressCurrent = document.getElementById('progress-current');
+        const progressFill = document.getElementById('progress-bar-fill');
+        let currentIndex = 0;
+        const totalSlides = slides.length;
+        document.getElementById('progress-total').textContent = String(totalSlides).padStart(2, '0');
+
+        function goToSlide(index) {
+            currentIndex = (index + totalSlides) % totalSlides;
+            slides.forEach((slide, i) => slide.classList.toggle('active', i === currentIndex));
+            thumbs.forEach((thumb, i) => thumb.classList.toggle('active', i === currentIndex));
+            const activeThumb = thumbs[currentIndex];
+            if (activeThumb) { activeThumb.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); }
+
+            titleEl.style.opacity = 0;
+            titleEl.style.transform = 'translateY(10px)';
+            setTimeout(() => {
+                titleEl.textContent = slides[currentIndex].dataset.title || '';
+                titleEl.style.opacity = 1;
+                titleEl.style.transform = 'translateY(0)';
+            }, 300);
+
+            progressCurrent.textContent = String(currentIndex + 1).padStart(2, '0');
+            progressFill.style.width = ((currentIndex + 1) / totalSlides * 100) + '%';
+        }
+
+        thumbs.forEach((thumb, i) => { thumb.addEventListener('click', () => goToSlide(i)); });
+        goToSlide(0);
+
+        /* Apple-style swipe: the active slide tracks your finger 1:1 while
+           dragging, then either flies off-screen into the next/previous
+           slide (fast flick, or dragged far enough) or springs back to
+           place with a soft bounce — same feel as iOS Photos paging. */
+        function addSwipeNavigation(el, { getActive, getSlideEl, onPrev, onNext, excludeSelector }) {
+            let startX = 0, startY = 0, startTime = 0, tracking = false, dragging = false, slideEl = null;
+            const COMMIT_DISTANCE_RATIO = 0.18;
+            const COMMIT_VELOCITY = 0.5; // px/ms — a quick flick commits even if short
+
+            el.addEventListener('touchstart', (e) => {
+                if (!getActive() || !e.touches || e.touches.length !== 1) { tracking = false; return; }
+                if (excludeSelector && e.target.closest(excludeSelector)) { tracking = false; return; }
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                startTime = Date.now();
+                tracking = true;
+                dragging = false;
+                slideEl = getSlideEl();
+            }, { passive: true });
+
+            el.addEventListener('touchmove', (e) => {
+                if (!tracking || !e.touches || e.touches.length !== 1) return;
+                const dx = e.touches[0].clientX - startX;
+                const dy = e.touches[0].clientY - startY;
+                if (!dragging) {
+                    if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+                    if (Math.abs(dy) > Math.abs(dx)) { tracking = false; return; }
+                    dragging = true;
+                    if (slideEl) { slideEl.style.transition = 'none'; }
+                }
+                e.preventDefault();
+                if (slideEl) { slideEl.style.transform = `translateX(${dx}px)`; }
+            }, { passive: false });
+
+            el.addEventListener('touchend', (e) => {
+                if (!tracking) return;
+                tracking = false;
+                const wasDragging = dragging;
+                dragging = false;
+                const finishedSlideEl = slideEl;
+                slideEl = null;
+                if (!wasDragging || !finishedSlideEl) return;
+
+                const touch = e.changedTouches && e.changedTouches[0];
+                const dx = touch ? touch.clientX - startX : 0;
+                const dt = Math.max(1, Date.now() - startTime);
+                const velocity = dx / dt;
+                const distanceThreshold = el.clientWidth * COMMIT_DISTANCE_RATIO;
+                const commitNext = dx <= -distanceThreshold || velocity <= -COMMIT_VELOCITY;
+                const commitPrev = dx >= distanceThreshold || velocity >= COMMIT_VELOCITY;
+
+                if (commitNext || commitPrev) {
+                    const flyTo = commitNext ? -el.clientWidth : el.clientWidth;
+                    finishedSlideEl.style.transition = 'transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)';
+                    finishedSlideEl.style.transform = `translateX(${flyTo}px)`;
+                    setTimeout(() => {
+                        finishedSlideEl.style.transition = 'none';
+                        finishedSlideEl.style.transform = '';
+                        if (commitNext) { onNext(); } else { onPrev(); }
+                    }, 280);
+                } else {
+                    finishedSlideEl.style.transition = 'transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    finishedSlideEl.style.transform = 'translateX(0px)';
+                    setTimeout(() => {
+                        finishedSlideEl.style.transition = 'none';
+                        finishedSlideEl.style.transform = '';
+                    }, 460);
+                }
+            }, { passive: true });
+
+            el.addEventListener('touchcancel', () => {
+                tracking = false;
+                if (dragging && slideEl) {
+                    const el2 = slideEl;
+                    el2.style.transition = 'transform 0.3s ease';
+                    el2.style.transform = 'translateX(0px)';
+                    setTimeout(() => { el2.style.transition = ''; el2.style.transform = ''; }, 320);
+                }
+                dragging = false;
+                slideEl = null;
+            }, { passive: true });
+        }
+
+
+        const tvScreen = document.getElementById('tv-screen');
+        /* Shared scroll-lock helpers used by both the TV and the projector.
+           Freezes the page at its current scroll offset (so nothing jumps)
+           and restores that exact offset when unlocked — this is what fixes
+           the "goes back to the first page" issue on exit, on PC and phone. */
+        let __savedScrollY = 0;
+        let __scrollLockCount = 0;
+        function lockPageScroll() {
+            if (__scrollLockCount === 0) {
+                __savedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+                document.documentElement.classList.add('lock-scroll');
+                document.body.classList.add('lock-scroll');
+                document.body.style.position = 'fixed';
+                document.body.style.top = (-__savedScrollY) + 'px';
+                document.body.style.left = '0';
+            }
+            __scrollLockCount++;
+        }
+        function unlockPageScroll() {
+            __scrollLockCount = Math.max(0, __scrollLockCount - 1);
+            if (__scrollLockCount === 0) {
+                document.documentElement.classList.remove('lock-scroll');
+                document.body.classList.remove('lock-scroll');
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.left = '';
+                /* The page uses CSS scroll-behavior:smooth globally, which would
+                   otherwise animate this restore (visible "jump to top, then
+                   glide back down"). Force an instant jump instead. */
+                const prevBehavior = document.documentElement.style.scrollBehavior;
+                document.documentElement.style.scrollBehavior = 'auto';
+                window.scrollTo(0, __savedScrollY);
+                document.documentElement.style.scrollBehavior = prevBehavior || '';
+            }
+        }
+
+        const tvViewOverlay = document.getElementById('tv-view-overlay');
+        const tvCloseBtn = document.getElementById('tv-close-btn');
+        const tvFullscreenBtn = document.getElementById('tv-fullscreen-btn');
+        const photosSection = document.getElementById('photos');
+        const fullscreenEls = [
+            document.getElementById('carousel-overlay-el'),
+            document.getElementById('carousel-content-el'),
+            document.getElementById('carousel-progress-el'),
+            document.getElementById('thumb-strip')
+        ];
+
+        let tvHomeRect = null;
+        let tvExpanded = false;
+
+        function expandTV() {
+            if (tvExpanded) return;
+            tvExpanded = true;
+            lockPageScroll();
+            tvHomeRect = tvScreen.getBoundingClientRect();
+            tvViewOverlay.style.display = 'none';
+            tvScreen.classList.add('tv-fullscreen');
+            tvScreen.style.left = '0';
+            tvScreen.style.top = '0';
+            tvScreen.style.width = '100vw';
+            tvScreen.style.height = '100vh';
+            tvScreen.style.height = '100dvh';
+
+            const scaleX = tvHomeRect.width / window.innerWidth;
+            const scaleY = tvHomeRect.height / window.innerHeight;
+            tvScreen.style.transition = 'none';
+            tvScreen.style.transform = `translate(${tvHomeRect.left}px, ${tvHomeRect.top}px) scale(${scaleX}, ${scaleY})`;
+            void tvScreen.offsetWidth;
+
+            requestAnimationFrame(() => {
+                tvScreen.style.transition = 'transform 0.9s cubic-bezier(0.4, 0, 0.2, 1)';
+                tvScreen.style.transform = 'translate(0px, 0px) scale(1, 1)';
+            });
+
+            tvScreen.addEventListener('transitionend', function handler(e) {
+                if (e.propertyName !== 'transform') return;
+                tvScreen.removeEventListener('transitionend', handler);
+                tvScreen.style.transition = '';
+                tvScreen.style.transform = '';
+                tvCloseBtn.classList.add('visible');
+                tvFullscreenBtn.classList.add('visible');
+                fullscreenEls.forEach(el => el.classList.add('visible'));
+            });
+        }
+
+        function collapseTV() {
+            if (!tvExpanded || !tvHomeRect) return;
+            if (isFullscreenActive()) { toggleFullscreen(); }
+            tvCloseBtn.classList.remove('visible');
+            tvFullscreenBtn.classList.remove('visible');
+            fullscreenEls.forEach(el => el.classList.remove('visible'));
+
+            const scaleX = tvHomeRect.width / window.innerWidth;
+            const scaleY = tvHomeRect.height / window.innerHeight;
+            tvScreen.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            tvScreen.style.transform = `translate(${tvHomeRect.left}px, ${tvHomeRect.top}px) scale(${scaleX}, ${scaleY})`;
+
+            tvScreen.addEventListener('transitionend', function handler(e) {
+                if (e.propertyName !== 'transform') return;
+                tvScreen.removeEventListener('transitionend', handler);
+                tvScreen.classList.remove('tv-fullscreen');
+                tvScreen.style.transition = '';
+                tvScreen.style.transform = '';
+                tvExpanded = false;
+                unlockPageScroll();
+                tvViewOverlay.style.display = 'flex';
+                positionTVScreen();
+            });
+        }
+
+        tvViewOverlay.addEventListener('click', expandTV);
+        tvCloseBtn.addEventListener('click', collapseTV);
+
+        addSwipeNavigation(tvScreen, {
+            getActive: () => tvExpanded,
+            getSlideEl: () => slides[currentIndex],
+            onPrev: () => goToSlide(currentIndex - 1),
+            onNext: () => goToSlide(currentIndex + 1),
+            excludeSelector: 'button, .thumb-strip, .thumb'
+        });
+
+        const tvScene = document.getElementById('tv-scene');
+
+        function positionTVScreen() {
+            if (tvExpanded) {
+                tvScreen.style.width = '100vw';
+                tvScreen.style.height = '100vh';
+                tvScreen.style.height = '100dvh';
+                return;
+            }
+            const cw = tvScene.clientWidth;
+            const ch = tvScene.clientHeight;
+            if (!cw || !ch) return;
+
+            const isMobile = window.innerWidth <= 1024;
+            const IMG_W = isMobile ? 1080 : 1670;
+            const IMG_H = isMobile ? 1920 : 941;
+            const PCT = isMobile
+                ? { left: 28.2, top: 18.5, width: 57.0, height: 19.3 }
+                : { left: 33.77, top: 23.17, width: 36.17, height: 31.67 };
+
+            const scale = Math.max(cw / IMG_W, ch / IMG_H);
+            const dispW = IMG_W * scale;
+            const dispH = IMG_H * scale;
+            const offsetX = (dispW - cw) / 2;
+            const offsetY = (dispH - ch) / 2;
+
+            tvScreen.style.left = ((PCT.left / 100) * dispW - offsetX) + 'px';
+            tvScreen.style.top = ((PCT.top / 100) * dispH - offsetY) + 'px';
+            tvScreen.style.width = ((PCT.width / 100) * dispW) + 'px';
+            tvScreen.style.height = ((PCT.height / 100) * dispH) + 'px';
+        }
+
+        positionTVScreen();
+        window.addEventListener('resize', () => { positionTVScreen(); });
+        window.addEventListener('load', () => { positionTVScreen(); });
+
+        const projScene = document.getElementById('projector-scene');
+        const projScreen = document.getElementById('projector-screen');
+        const projViewOverlay = document.getElementById('proj-view-overlay');
+        const projCloseBtn = document.getElementById('proj-close-btn');
+        const videoSlides = document.querySelectorAll('.video-slide');
+        const totalVideos = videoSlides.length;
+        const videoTitleEl = document.getElementById('video-title-el');
+        const playPauseBtn = document.getElementById('video-playpause-btn');
+        const prevVideoBtn = document.getElementById('video-prev-btn');
+        const nextVideoBtn = document.getElementById('video-next-btn');
+        const fullscreenBtn = document.getElementById('video-fullscreen-btn');
+        const videosSection = document.getElementById('videos');
+
+        const seekTrack = document.getElementById('video-seek-track');
+        const seekFill = document.getElementById('video-seek-fill');
+        const seekHandle = document.getElementById('video-seek-handle');
+        const timeCurrentEl = document.getElementById('video-time-current');
+        const timeTotalEl = document.getElementById('video-time-total');
+
+        const projFullscreenEls = [
+            document.getElementById('video-overlay-bg-el'),
+            document.getElementById('video-content-info-el'),
+            document.getElementById('video-seek-wrap'),
+            document.getElementById('video-controls-bar')
+        ];
+
+        let currentVideoIndex = 0;
+        let projExpanded = false;
+        let projHomeRect = null;
+
+        function currentVideoEl() { return videoSlides[currentVideoIndex].querySelector('video'); }
+        function updatePlayIcon(isPlaying) { playPauseBtn.innerHTML = isPlaying ? '&#10074;&#10074;' : '&#9654;'; }
+
+        function goToVideo(index, autoplay) {
+            const prevVideo = currentVideoEl();
+            if (prevVideo) { prevVideo.pause(); }
+            document.body.classList.remove('hide-video-text');
+
+            currentVideoIndex = (index + totalVideos) % totalVideos;
+            videoSlides.forEach((slide, i) => slide.classList.toggle('active', i === currentVideoIndex));
+
+            videoTitleEl.style.opacity = 0;
+            videoTitleEl.style.transform = 'translateY(10px)';
+            setTimeout(() => {
+                videoTitleEl.textContent = videoSlides[currentVideoIndex].dataset.title || '';
+                videoTitleEl.style.opacity = 1;
+                videoTitleEl.style.transform = 'translateY(0)';
+            }, 300);
+
+            const newVideo = currentVideoEl();
+            if (newVideo) {
+                if (newVideo.readyState === 0) { newVideo.load(); }
+                newVideo.currentTime = 0;
+                updateSeekUI();
+                if (autoplay) {
+                    const playPromise = newVideo.play();
+                    if (playPromise && playPromise.catch) {
+                        playPromise.then(() => updatePlayIcon(true)).catch(err => {
+                            updatePlayIcon(false);
+                        });
+                    } else {
+                        updatePlayIcon(true);
+                    }
+                } else {
+                    updatePlayIcon(false);
+                }
+            }
+        }
+
+        function togglePlayPause() {
+            const video = currentVideoEl();
+            if (!video) return;
+            if (video.paused) { video.play(); updatePlayIcon(true); }
+            else { video.pause(); updatePlayIcon(false); }
+            showVideoUI();
+        }
+
+        function formatTime(seconds) {
+            if (!isFinite(seconds) || seconds < 0) return '0:00';
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        function updateSeekUI() {
+            const video = currentVideoEl();
+            if (!video) return;
+            const hasDuration = isFinite(video.duration) && video.duration > 0;
+            const pct = hasDuration ? (video.currentTime / video.duration) * 100 : 0;
+            seekFill.style.width = pct + '%';
+            seekHandle.style.left = pct + '%';
+            timeCurrentEl.textContent = formatTime(video.currentTime);
+            timeTotalEl.textContent = hasDuration ? formatTime(video.duration) : '0:00';
+        }
+
+        function seekToClientX(clientX) {
+            const video = currentVideoEl();
+            if (!video || !isFinite(video.duration) || video.duration <= 0) return;
+            const rect = seekTrack.getBoundingClientRect();
+            const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+            video.currentTime = ratio * video.duration;
+            updateSeekUI();
+        }
+
+        let isDraggingSeek = false;
+        seekTrack.addEventListener('pointerdown', (e) => {
+            e.stopPropagation();
+            isDraggingSeek = true;
+            seekTrack.setPointerCapture(e.pointerId);
+            seekToClientX(e.clientX);
+            showVideoUI();
+        });
+        seekTrack.addEventListener('pointermove', (e) => {
+            if (!isDraggingSeek) return;
+            seekToClientX(e.clientX);
+            showVideoUI();
+        });
+        seekTrack.addEventListener('pointerup', (e) => {
+            isDraggingSeek = false;
+            seekTrack.releasePointerCapture(e.pointerId);
+        });
+        seekTrack.addEventListener('pointercancel', () => { isDraggingSeek = false; });
+
+        /* Touch fallback: some mobile browsers handle Pointer Events on
+           transformed/fixed-position ancestors inconsistently, so mirror the
+           same seek logic with plain touch events to guarantee dragging works. */
+        let isTouchSeeking = false;
+        seekTrack.addEventListener('touchstart', (e) => {
+            e.stopPropagation();
+            isTouchSeeking = true;
+            if (e.touches && e.touches[0]) { seekToClientX(e.touches[0].clientX); }
+            showVideoUI();
+        }, { passive: true });
+        seekTrack.addEventListener('touchmove', (e) => {
+            if (!isTouchSeeking) return;
+            e.preventDefault();
+            if (e.touches && e.touches[0]) { seekToClientX(e.touches[0].clientX); }
+            showVideoUI();
+        }, { passive: false });
+        seekTrack.addEventListener('touchend', () => { isTouchSeeking = false; });
+        seekTrack.addEventListener('touchcancel', () => { isTouchSeeking = false; });
+
+        videoSlides.forEach(slide => {
+            const v = slide.querySelector('video');
+            v.addEventListener('timeupdate', () => { if (v === currentVideoEl()) updateSeekUI(); });
+            v.addEventListener('loadedmetadata', () => { if (v === currentVideoEl()) updateSeekUI(); });
+            v.addEventListener('play', () => { if (v === currentVideoEl()) { showVideoUI(); } });
+            v.addEventListener('pause', () => { if (v === currentVideoEl()) { showVideoUI(); } });
+        });
+
+        let uiHideTimer = null;
+        const UI_IDLE_DELAY = 2500;
+
+        function showVideoUI() {
+            if (!projExpanded) return;
+            document.body.classList.remove('hide-video-ui');
+            document.body.classList.remove('hide-video-text');
+            clearTimeout(uiHideTimer);
+            const video = currentVideoEl();
+            if (video && !video.paused) {
+                uiHideTimer = setTimeout(() => {
+                    document.body.classList.add('hide-video-ui');
+                    document.body.classList.add('hide-video-text');
+                }, UI_IDLE_DELAY);
+            }
+        }
+
+        document.addEventListener('mousemove', () => { if (projExpanded) { showVideoUI(); } });
+        document.addEventListener('touchstart', () => { if (projExpanded) { showVideoUI(); } }, { passive: true });
+
+        prevVideoBtn.addEventListener('click', (e) => { e.stopPropagation(); goToVideo(currentVideoIndex - 1, true); showVideoUI(); });
+        nextVideoBtn.addEventListener('click', (e) => { e.stopPropagation(); goToVideo(currentVideoIndex + 1, true); showVideoUI(); });
+
+        addSwipeNavigation(projScreen, {
+            getActive: () => projExpanded,
+            getSlideEl: () => videoSlides[currentVideoIndex],
+            onPrev: () => { goToVideo(currentVideoIndex - 1, true); showVideoUI(); },
+            onNext: () => { goToVideo(currentVideoIndex + 1, true); showVideoUI(); },
+            excludeSelector: 'button, .video-seek-track, .video-seek-wrap, .video-controls-bar'
+        });
+
+        let manualFullscreenActive = false;
+        let manualFullscreenTarget = null;
+
+        function isFullscreenActive() {
+            return !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement || manualFullscreenActive);
+        }
+
+        function updateFullscreenIcon() {
+            const active = isFullscreenActive();
+            fullscreenBtn.innerHTML = active ? '&#10529;' : '&#9974;';
+            fullscreenBtn.title = active ? 'Exit Full Screen' : 'Full Screen';
+            tvFullscreenBtn.innerHTML = active ? '&#10529;' : '&#9974;';
+            tvFullscreenBtn.title = active ? 'Exit Full Screen' : 'Full Screen';
+        }
+
+        let preFullscreenScrollY = null;
+        function restoreScrollAfterFullscreen() {
+            if (preFullscreenScrollY === null) return;
+            const y = preFullscreenScrollY;
+            preFullscreenScrollY = null;
+            const pin = () => window.scrollTo({ top: y, left: 0, behavior: 'auto' });
+            pin();
+            requestAnimationFrame(() => { pin(); requestAnimationFrame(pin); });
+        }
+
+        function handleFullscreenChange() {
+            updateFullscreenIcon();
+            if (!isFullscreenActive()) { restoreScrollAfterFullscreen(); }
+        }
+
+        /* Manual fallback: used whenever the real Fullscreen API is missing or
+           silently refuses to engage (common on mobile browsers, especially for
+           a section that isn't a plain <video> element). It maximizes the view
+           and nudges mobile browsers to tuck their address bar away, so the
+           button always does something visible instead of nothing at all. */
+        function enterManualFullscreen(el) {
+            manualFullscreenActive = true;
+            manualFullscreenTarget = el;
+            el.classList.add('manual-fullscreen');
+            updateFullscreenIcon();
+            window.scrollTo(0, 1);
+        }
+
+        function exitManualFullscreen() {
+            if (manualFullscreenTarget) { manualFullscreenTarget.classList.remove('manual-fullscreen'); }
+            manualFullscreenTarget = null;
+            manualFullscreenActive = false;
+            updateFullscreenIcon();
+            restoreScrollAfterFullscreen();
+        }
+
+        function toggleFullscreen(targetEl) {
+            if (!isFullscreenActive()) {
+                preFullscreenScrollY = window.scrollY;
+                const el = targetEl || videosSection;
+                const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+                if (req) {
+                    let settled = false;
+                    const markSettled = () => { settled = true; };
+                    document.addEventListener('fullscreenchange', markSettled, { once: true });
+                    document.addEventListener('webkitfullscreenchange', markSettled, { once: true });
+                    const result = req.call(el);
+                    if (result && result.catch) {
+                        result.catch(() => { if (!settled) enterManualFullscreen(el); });
+                    }
+                    /* Safety net: some mobile browsers accept the request but never
+                       actually engage fullscreen (no event, no rejection). If that
+                       happens, fall back to the manual mode after a short beat. */
+                    setTimeout(() => { if (!settled && !isFullscreenActive()) { enterManualFullscreen(el); } }, 400);
+                } else {
+                    enterManualFullscreen(el);
+                }
+            } else if (manualFullscreenActive) {
+                exitManualFullscreen();
+            } else {
+                const exit = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+                if (exit) {
+                    const result = exit.call(document);
+                    if (result && result.catch) { result.catch(() => {}); }
+                }
+            }
+        }
+
+        fullscreenBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleFullscreen(videosSection); showVideoUI(); });
+        tvFullscreenBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleFullscreen(photosSection); });
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+        document.addEventListener('msfullscreenchange', handleFullscreenChange);
+        playPauseBtn.addEventListener('click', (e) => { e.stopPropagation(); togglePlayPause(); });
+
+        function expandProjector() {
+            if (projExpanded) return;
+            projExpanded = true;
+            lockPageScroll();
+            projHomeRect = projScreen.getBoundingClientRect();
+            projViewOverlay.style.display = 'none';
+            projScreen.classList.add('proj-fullscreen');
+            projScreen.style.left = '0';
+            projScreen.style.top = '0';
+            projScreen.style.width = '100vw';
+            projScreen.style.height = '100vh';
+            projScreen.style.height = '100dvh';
+
+            const scaleX = projHomeRect.width / window.innerWidth;
+            const scaleY = projHomeRect.height / window.innerHeight;
+            projScreen.style.transition = 'none';
+            projScreen.style.transform = `translate(${projHomeRect.left}px, ${projHomeRect.top}px) scale(${scaleX}, ${scaleY})`;
+            void projScreen.offsetWidth;
+
+            requestAnimationFrame(() => {
+                projScreen.style.transition = 'transform 0.9s cubic-bezier(0.4, 0, 0.2, 1)';
+                projScreen.style.transform = 'translate(0px, 0px) scale(1, 1)';
+            });
+
+            projScreen.addEventListener('transitionend', function handler(e) {
+                if (e.propertyName !== 'transform') return;
+                projScreen.removeEventListener('transitionend', handler);
+                projCloseBtn.classList.add('visible');
+                projFullscreenEls.forEach(el => el.classList.add('visible'));
+                goToVideo(currentVideoIndex, false);
+                showVideoUI();
+            });
+        }
+
+        function collapseProjector() {
+            if (!projExpanded || !projHomeRect) return;
+            const video = currentVideoEl();
+            if (video) { video.pause(); }
+            updatePlayIcon(false);
+            if (isFullscreenActive()) { toggleFullscreen(); }
+            clearTimeout(uiHideTimer);
+            document.body.classList.remove('hide-video-ui');
+            document.body.classList.remove('hide-video-text');
+            projCloseBtn.classList.remove('visible');
+            projFullscreenEls.forEach(el => el.classList.remove('visible'));
+
+            const scaleX = projHomeRect.width / window.innerWidth;
+            const scaleY = projHomeRect.height / window.innerHeight;
+            projScreen.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            projScreen.style.transform = `translate(${projHomeRect.left}px, ${projHomeRect.top}px) scale(${scaleX}, ${scaleY})`;
+
+            projScreen.addEventListener('transitionend', function handler(e) {
+                if (e.propertyName !== 'transform') return;
+                projScreen.removeEventListener('transitionend', handler);
+                projScreen.classList.remove('proj-fullscreen');
+                projScreen.style.transition = '';
+                projScreen.style.transform = '';
+                projExpanded = false;
+                unlockPageScroll();
+                projViewOverlay.style.display = 'flex';
+                positionProjectorScreen();
+            });
+        }
+
+        projViewOverlay.addEventListener('click', expandProjector);
+        projCloseBtn.addEventListener('click', collapseProjector);
+
+        function positionProjectorScreen() {
+            if (projExpanded) {
+                projScreen.style.width = '100vw';
+                projScreen.style.height = '100vh';
+                projScreen.style.height = '100dvh';
+                return;
+            }
+            const cw = projScene.clientWidth;
+            const ch = projScene.clientHeight;
+            if (!cw || !ch) return;
+
+            const isMobile = window.innerWidth <= 1024;
+            const PROJ_IMG_W = isMobile ? 940 : 1670;
+            const PROJ_IMG_H = isMobile ? 1672 : 942;
+            const PROJ_SCREEN_PCT = isMobile
+                ? { left: 35.0, top: 23.5, width: 60.0, height: 29.0 }
+                : { left: 34.4, top: 12.2, width: 52.5, height: 50.6 };
+
+            const scale = Math.max(cw / PROJ_IMG_W, ch / PROJ_IMG_H);
+            const dispW = PROJ_IMG_W * scale;
+            const dispH = PROJ_IMG_H * scale;
+            const offsetX = (dispW - cw) / 2;
+            const offsetY = (dispH - ch) / 2;
+
+            projScreen.style.left = ((PROJ_SCREEN_PCT.left / 100) * dispW - offsetX) + 'px';
+            projScreen.style.top = ((PROJ_SCREEN_PCT.top / 100) * dispH - offsetY) + 'px';
+            projScreen.style.width = ((PROJ_SCREEN_PCT.width / 100) * dispW) + 'px';
+            projScreen.style.height = ((PROJ_SCREEN_PCT.height / 100) * dispH) + 'px';
+        }
+
+        positionProjectorScreen();
+        window.addEventListener('load', () => { positionProjectorScreen(); });
+        window.addEventListener('resize', () => {
+            positionTVScreen();
+            positionProjectorScreen();
+        });
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', () => {
+                positionTVScreen();
+                positionProjectorScreen();
+            });
+        }
+        window.addEventListener('load', () => {
+            setTimeout(() => { positionTVScreen(); positionProjectorScreen(); }, 400);
+        });
+
+        const revealObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, {threshold: 0.05});
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+        const mobHam = document.getElementById('mob-ham');
+        const mobNavDrawer = document.getElementById('mob-nav-drawer');
+        if (mobHam && mobNavDrawer) {
+            function toggleMobNav(open) {
+                mobHam.classList.toggle('open', open);
+                mobNavDrawer.classList.toggle('open', open);
+                document.body.style.overflow = open ? 'hidden' : '';
+            }
+            mobHam.addEventListener('click', () => toggleMobNav(!mobNavDrawer.classList.contains('open')));
+            document.querySelectorAll('[data-mob-nav-close]').forEach(el => {
+                el.addEventListener('click', () => toggleMobNav(false));
+            });
+        }
+    </script>
+</body>
+</html>
