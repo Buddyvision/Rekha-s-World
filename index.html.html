@@ -2,9 +2,122 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Rekha World - Page 2 & Videos</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Rekha World</title>
+    <meta name="description" content="Rekha World - a celebration of grace and elegance.">
+    <meta name="theme-color" content="#f7f2ea">
+    <link rel="icon" href="data:,">
+    <link rel="preload" as="image" href="Gallery/Photos/mobile-hero.jpg" media="(max-width: 1024px)">
+    <link rel="preload" as="image" href="Gallery/Photos/page2-bg.png" media="(min-width: 1025px)">
+    <noscript><style>#page-loader { display: none !important; }</style></noscript>
+
+    <script>
+    /* Stable phone height: measured once, then only re-measured when the screen WIDTH changes
+       (rotation). Address-bar show/hide and keyboard changes no longer resize the page sections,
+       so the intro text can't creep up and down while scrolling. */
+    (function () {
+        var root = document.documentElement, w = window.innerWidth;
+        function setH() { root.style.setProperty('--app-h', window.innerHeight + 'px'); }
+        setH();
+        window.addEventListener('resize', function () {
+            if (window.innerWidth !== w) { w = window.innerWidth; setH(); }
+        });
+    })();
+
+    /* Built-in 404 page: this same file is also the 404 page.
+       Any address other than the home page (/, /index.html) shows the "page not found" view.
+       Test it any time by adding ?404 to the address. If your home file is not called index.html, add its name below. */
+    (function () {
+        /* Home = the bare address (/ or /folder/) or any file starting with "index", "home" or "default"
+           (index.html, index.htm, index.html.html, index). Phones and share links often open
+           the site with a slightly different address, so this is deliberately forgiving. */
+        var p = location.pathname, seg = p.substring(p.lastIndexOf('/') + 1).toLowerCase();
+        var isHome = location.protocol === 'file:' || seg === '' || /^(index|home|default)([.\-_].*)?$/.test(seg);
+        if (!isHome || /[?&]404\b/.test(location.search)) {
+            document.documentElement.classList.add('is-404');
+            document.title = 'Page not found - Rekha World';
+            var m = document.createElement('meta'); m.name = 'robots'; m.content = 'noindex';
+            document.head.appendChild(m);
+        }
+    })();
+    </script>
+
+    <!-- HTTP / resource log: records every file the page requests and flags failures.
+         Console: printHttpLog() and checkLinks().  On screen: open the site with ?debug at the end of the address. -->
+    <script>
+    (function () {
+        var entries = [];
+        window.__httpLog = entries;
+        function add(kind, url, status, note) {
+            entries.push({ time: Math.round(performance.now()) + 'ms', kind: kind, status: status, url: url, note: note || '' });
+            if (status === 'FAILED' || (typeof status === 'number' && status >= 400)) {
+                console.warn('[http]', status, url, note || '');
+            }
+        }
+        window.addEventListener('error', function (e) {
+            var t = e.target;
+            if (t && t !== window && (t.src || t.href)) {
+                add('load-error', t.currentSrc || t.src || t.href, 'FAILED', '<' + String(t.tagName).toLowerCase() + '>');
+            }
+        }, true);
+        try {
+            new PerformanceObserver(function (list) {
+                list.getEntries().forEach(function (r) {
+                    add(r.initiatorType || 'resource', r.name, r.responseStatus || '?',
+                        Math.round(r.duration) + 'ms, ' + Math.round((r.transferSize || 0) / 1024) + ' KB');
+                });
+            }).observe({ type: 'resource', buffered: true });
+        } catch (_) {}
+
+        window.printHttpLog = function () { console.table(entries); };
+
+        /* Checks every link and file this page points to (HEAD request) and returns the ones that fail. */
+        window.checkLinks = async function () {
+            var urls = new Set();
+            function addUrl(u) {
+                if (!u || u.charAt(0) === '#' || /^(mailto|tel|javascript|data):/i.test(u)) return;
+                try { urls.add(new URL(u, location.href).href); } catch (_) {}
+            }
+            document.querySelectorAll('a[href]').forEach(function (a) { addUrl(a.getAttribute('href')); });
+            document.querySelectorAll('img[src], img[data-src], source[src], audio[src], video[src], [data-bg]').forEach(function (el) {
+                addUrl(el.getAttribute('src') || el.getAttribute('data-src') || el.getAttribute('data-bg'));
+            });
+            ['mobile-hero.jpg', 'page2-bg.png', 'mobile-nav-bg.jpg', 'tv-bg.png', 'mobile-tv-bg.jpg',
+             'projector-room-bg.png', 'mobile-projector-bg.png'].forEach(function (f) { addUrl('Gallery/Photos/' + f); });
+            var bad = [];
+            for (const u of urls) {
+                try {
+                    var r = await fetch(u, { method: 'HEAD' });
+                    if (!r.ok) bad.push({ status: r.status, url: u });
+                } catch (e) { bad.push({ status: 'ERR', url: u }); }
+            }
+            console.log('[checkLinks] checked ' + urls.size + ' URLs, ' + bad.length + ' broken');
+            if (bad.length) console.table(bad);
+            return bad;
+        };
+
+        if (/[?&]debug\b/.test(location.search)) {
+            window.addEventListener('load', function () {
+                setTimeout(async function () {
+                    var bad = await window.checkLinks();
+                    var failed = entries.filter(function (e) { return e.status === 'FAILED' || (typeof e.status === 'number' && e.status >= 400); });
+                    var p = document.createElement('pre');
+                    p.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;max-height:45vh;overflow:auto;z-index:2147483647;margin:0;padding:10px;background:rgba(20,15,10,.93);color:#f7f2ea;font:11px/1.5 monospace;border-radius:8px;white-space:pre-wrap;word-break:break-all';
+                    p.textContent = 'HTTP LOG (tap to close)\n' +
+                        'requests: ' + entries.length + ' | failed to load: ' + failed.length + ' | broken links: ' + bad.length + '\n\n' +
+                        (failed.length ? 'FAILED REQUESTS\n' + failed.map(function (e) { return e.status + '  ' + e.url; }).join('\n') + '\n\n' : '') +
+                        (bad.length ? 'BROKEN LINKS\n' + bad.map(function (e) { return e.status + '  ' + e.url; }).join('\n') : 'No broken links found.');
+                    p.onclick = function () { p.remove(); };
+                    document.body.appendChild(p);
+                }, 1500);
+            });
+        }
+    })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -12,30 +125,101 @@
             scroll-behavior: smooth;
         }
 
+        /* Visible, slim gold scrollbar on PC */
         @media (min-width: 1025px) {
-            html {
-                scrollbar-width: none;
-            }
-            ::-webkit-scrollbar { display: none; width: 0; height: 0; }
+            html { scrollbar-width: thin; scrollbar-color: #8b6b32 #f7f2ea; scrollbar-gutter: stable; }
+            ::-webkit-scrollbar { width: 10px; height: 10px; }
+            ::-webkit-scrollbar-track { background: #f7f2ea; }
+            ::-webkit-scrollbar-thumb { background: #8b6b32; border-radius: 6px; border: 2px solid #f7f2ea; }
+            ::-webkit-scrollbar-thumb:hover { background: #6f5527; }
+            .thumb-strip::-webkit-scrollbar { display: none; }
         }
+
+        @keyframes overlayReturn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+        .overlay-return { animation: overlayReturn 0.9s ease 0.1s both; }
+        .scene-dim { position: absolute; inset: 0; background: #0b0806; opacity: 0; pointer-events: none; z-index: 0; }
 
         body, html {
             width: 100%;
             min-height: 100%;
-            overflow-x: hidden;
             font-family: 'DM Sans', sans-serif;
             background-color: #f7f2ea;
         }
+        html { overflow-x: hidden; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+        body { overflow-x: clip; }
+
+        /* Loading screen: hides the half-loaded page so nothing jumps or flickers while files arrive */
+        #page-loader {
+            position: fixed; inset: 0; z-index: 100000; background: #f7f2ea;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.5s ease, visibility 0s linear 0.5s;
+        }
+        #page-loader.done { opacity: 0; visibility: hidden; pointer-events: none; }
+        .loader-ring {
+            width: 34px; height: 34px; border-radius: 50%;
+            border: 1px solid rgba(139, 107, 50, 0.25); border-top-color: #8b6b32;
+            animation: loaderSpin 1s linear infinite;
+        }
+        @keyframes loaderSpin { to { transform: rotate(360deg); } }
+
+        /* Built-in 404 page (shown only when html has the is-404 class) */
+        .not-found {
+            display: none; position: fixed; inset: 0; z-index: 200000;
+            background: #f7f2ea; overflow: auto;
+            align-items: center; padding: 32px 8%;
+        }
+        html.is-404 .not-found { display: flex; }
+        html.is-404 body > :not(.not-found) { display: none !important; }
+        html.is-404, html.is-404 body { overflow-x: hidden; }
+        .nf-main { width: 100%; max-width: 560px; }
+        .nf-numeral {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-weight: 300; font-style: italic;
+            font-size: clamp(9rem, 38vw, 19rem); line-height: 0.8;
+            color: rgba(139, 107, 50, 0.16);
+            margin-left: -0.04em; margin-bottom: -0.28em; user-select: none;
+        }
+        .not-found h1 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-weight: 300; font-size: clamp(2.2rem, 6vw, 3.4rem);
+            line-height: 1.12; color: #2c221e; position: relative;
+            padding-bottom: 18px; margin-bottom: 20px;
+        }
+        .not-found h1::after {
+            content: ''; position: absolute; left: 1px; bottom: 0;
+            width: 46px; height: 1.5px;
+            background: linear-gradient(90deg, #8b6b32, rgba(139, 107, 50, 0));
+        }
+        .not-found p { font-size: 1.05rem; line-height: 1.8; font-weight: 300; color: #5a4f47; max-width: 46ch; margin-bottom: 34px; }
+        .nf-actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+        .nf-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-height: 46px; padding: 0 28px; border-radius: 999px;
+            border: 1px solid #8b6b32; color: #8b6b32;
+            font-size: 0.78rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
+            text-decoration: none; transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .nf-btn:hover, .nf-btn:focus-visible { background: #8b6b32; color: #fff; box-shadow: 0 6px 20px rgba(139, 107, 50, 0.3); }
+        .nf-btn:focus-visible { outline: 2px solid #2c221e; outline-offset: 3px; }
+        .nf-btn.quiet { border-color: transparent; padding: 0 6px; }
+        .nf-btn.quiet:hover, .nf-btn.quiet:focus-visible { background: transparent; color: #2c221e; box-shadow: none; }
+        @media (prefers-reduced-motion: no-preference) {
+            .nf-main { animation: nfArrive 0.9s cubic-bezier(.2, .7, .2, 1) both; }
+            @keyframes nfArrive { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+        }
+
+        /* TV / projector screens stay hidden until JS has placed them (stops the "jump" on load) */
+        .tv-screen:not(.positioned), .projector-screen:not(.positioned) { visibility: hidden; }
 
         /* Applied while the TV or projector screen is expanded to fullscreen,
            so the page scrollbar disappears (and the exact scroll position
            comes back untouched when you exit — no jump to the top). */
         html.lock-scroll {
             overflow: hidden !important;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* old Edge/IE */
+            scrollbar-gutter: auto !important;
+            scrollbar-width: none !important;
         }
-        html.lock-scroll::-webkit-scrollbar { display: none; } /* Chrome/Safari/webkit */
+        html.lock-scroll::-webkit-scrollbar { display: none !important; width: 0 !important; }
         body.lock-scroll {
             overflow: hidden !important;
             width: 100%;
@@ -69,14 +253,18 @@
         .mob-nav-drawer {
             display: flex; flex-direction: column; justify-content: center;
             position: fixed; inset: 0; z-index: 500;
-            background-image: linear-gradient(rgba(247, 242, 234, 0.55), rgba(247, 242, 234, 0.55)), url('Gallery/Photos/mobile-nav-bg.jpg');
+            background-color: #f7f2ea;
             background-size: cover; background-position: center; background-repeat: no-repeat;
             padding: 80px 30px 48px;
             transform: translateX(100%);
-            transition: transform 0.5s cubic-bezier(.7,0,.3,1);
+            visibility: hidden;
+            transition: transform 0.5s cubic-bezier(.7,0,.3,1), visibility 0s linear 0.5s;
             pointer-events: none;
         }
-        .mob-nav-drawer.open { transform: translateX(0); pointer-events: all; }
+        .mob-nav-drawer.warm, .mob-nav-drawer.open {
+            background-image: linear-gradient(rgba(247, 242, 234, 0.55), rgba(247, 242, 234, 0.55)), url('Gallery/Photos/mobile-nav-bg.jpg');
+        }
+        .mob-nav-drawer.open { transform: translateX(0); visibility: visible; pointer-events: all; transition: transform 0.5s cubic-bezier(.7,0,.3,1), visibility 0s; }
 
         .page2-container {
             position: relative; width: 100vw; min-height: 100vh;
@@ -138,11 +326,23 @@
             z-index: 99999 !important; margin: 0 !important;
         }
 
+        /* YouTube-style phone full screen for videos: the player turns sideways to fill a portrait phone */
+        .videos-section.rot-fullscreen {
+            width: 100vh !important; width: 100dvh !important;
+            height: 100vw !important;
+            top: 0 !important; left: 0 !important; right: auto !important; bottom: auto !important; inset: auto !important;
+            transform-origin: top left; transform: translateX(100vw) rotate(90deg);
+        }
+        .rot-fullscreen .projector-screen.proj-fullscreen { width: 100% !important; height: 100% !important; }
+        .rot-fullscreen .video-seek-wrap { width: min(560px, 68dvh); }
+        .rot-fullscreen .video-content-info { bottom: 120px; }
+
         .tv-scene {
             position: relative; width: 100%; height: 100%;
-            background-image: url('Gallery/Photos/tv-bg.png');
+            background-color: #1a1512;
             background-size: cover; background-position: center; background-repeat: no-repeat;
         }
+        .tv-scene.bg-on { background-image: url('Gallery/Photos/tv-bg.png'); }
 
         .tv-screen {
             position: absolute; overflow: hidden; cursor: pointer;
@@ -300,9 +500,10 @@
 
         .projector-scene {
             position: relative; width: 100%; height: 100%;
-            background-image: url('Gallery/Photos/projector-room-bg.png');
+            background-color: #1a1512;
             background-size: cover; background-position: center; background-repeat: no-repeat;
         }
+        .projector-scene.bg-on { background-image: url('Gallery/Photos/projector-room-bg.png'); }
 
         .projector-screen {
             position: absolute; overflow: hidden; cursor: pointer;
@@ -503,7 +704,7 @@
                 transition: color 0.25s ease;
             }
             .mob-nav-drawer-link:last-of-type { border-bottom: none; }
-            .mob-nav-drawer-link:active { color: #8b6b32; }
+            .mob-nav-drawer-link:active, .mob-nav-drawer-link.active { color: #8b6b32; }
             .mob-nav-drawer-num {
                 font-family: 'DM Sans', sans-serif; font-size: 0.6rem; font-weight: 400;
                 color: #8b6b32; letter-spacing: 2px; vertical-align: super; margin-right: 10px;
@@ -516,7 +717,8 @@
 
             .page2-container {
                 position: relative; width: 100vw;
-                height: 100vh; height: 100dvh;
+                min-height: 0;
+                height: 100vh; height: 100svh; height: var(--app-h, 100svh);
                 background-image: url('Gallery/Photos/mobile-hero.jpg');
                 background-size: cover; background-position: center top; background-repeat: no-repeat;
                 display: flex; flex-direction: column; justify-content: flex-end;
@@ -531,11 +733,17 @@
             }
 
             .content-panel .panel-eyebrow { display: none; }
+            /* Intro text is locked to the bottom of the hero: pinned to the section itself,
+               so it can't drift when the address bar shows/hides, content changes or the page scrolls. */
             .content-panel {
-                position: relative; width: 100%; max-width: 100%;
+                position: absolute; left: 16px; right: 16px; bottom: 56px;
+                width: auto; max-width: none; margin: 0;
                 background: transparent; backdrop-filter: none;
                 padding: 0 6px; border: none; box-shadow: none;
-                text-align: left; z-index: 10; margin-bottom: 22px;
+                text-align: left; z-index: 10;
+                transform: none !important; transition: none;
+                -webkit-user-select: none; user-select: none;
+                -webkit-touch-callout: none;
             }
             .content-panel h1 {
                 font-size: 1.55rem; font-weight: 400; font-style: italic;
@@ -562,16 +770,22 @@
                 box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             }
 
-            .tv-scene {
+            .tv-scene.bg-on {
                 background-image: url('Gallery/Photos/mobile-tv-bg.jpg');
                 background-size: cover; background-position: center;
             }
-            .projector-scene {
+            .projector-scene.bg-on {
                 background-image: url('Gallery/Photos/mobile-projector-bg.png');
                 background-size: cover; background-position: center;
             }
 
-            .photos-section, .videos-section { height: 100vh; height: 100dvh; }
+            /* Phone hero: height is tied to the screen WIDTH (not the browser's changing height),
+               so the photo and the locked intro text always sit in exactly the same place. */
+            @media (max-width: 600px) {
+                .page2-container { height: 210vw; min-height: 0; }
+            }
+
+            .photos-section, .videos-section { height: 100vh; height: 100svh; height: var(--app-h, 100svh); }
             .carousel-content { left: 6%; right: 6%; bottom: 130px; max-width: 100%; }
             .carousel-progress { left: 6%; bottom: 95px; }
             .video-content-info { left: 6%; right: 6%; bottom: 115px; max-width: 100%; }
@@ -587,14 +801,47 @@
 </head>
 <body>
 
-    <button class="hamburger" id="mob-ham" aria-label="Open menu">
+    <div id="page-loader" aria-hidden="true"><div class="loader-ring"></div></div>
+    <script>
+    (function () {
+        var loader = document.getElementById('page-loader'), done = false;
+        function hide() {
+            if (done) return; done = true;
+            loader.classList.add('done');
+            setTimeout(function () { if (loader.parentNode) loader.parentNode.removeChild(loader); }, 700);
+        }
+        setTimeout(hide, 3000); /* never block the page for more than 3 seconds */
+        var src = window.matchMedia('(max-width: 1024px)').matches ? 'Gallery/Photos/mobile-hero.jpg' : 'Gallery/Photos/page2-bg.png';
+        var img = new Image();
+        img.onload = img.onerror = function () {
+            if (document.fonts && document.fonts.ready) {
+                Promise.race([document.fonts.ready, new Promise(function (r) { setTimeout(r, 800); })]).then(hide);
+            } else { hide(); }
+        };
+        img.src = src;
+    })();
+    </script>
+
+    <div class="not-found" role="main">
+        <div class="nf-main">
+            <div class="nf-numeral" aria-hidden="true">404</div>
+            <h1>This page doesn&rsquo;t exist</h1>
+            <p>The address may be mistyped, or the page may have moved. Head back to Rekha World to find the photos and videos.</p>
+            <div class="nf-actions">
+                <a class="nf-btn" href="./" onclick="location.href=location.pathname.replace(/[^\/]*$/, '');return false;">Go to Rekha World</a>
+                <a class="nf-btn quiet" href="javascript:history.back()">Previous page</a>
+            </div>
+        </div>
+    </div>
+
+    <button class="hamburger" id="mob-ham" aria-label="Open menu" aria-expanded="false" aria-controls="mob-nav-drawer">
         <div class="ham-bar"></div>
         <div class="ham-bar"></div>
         <div class="ham-bar"></div>
     </button>
 
     <div class="mob-nav-drawer" id="mob-nav-drawer" role="navigation" aria-label="Main menu">
-        <a href="Untitled-1.html" class="mob-nav-drawer-link" data-mob-nav-close><span class="mob-nav-drawer-num">01</span>Welcome</a>
+        <a href="#welcome" class="mob-nav-drawer-link active" data-mob-nav-close><span class="mob-nav-drawer-num">01</span>Welcome</a>
         <a href="#photos" class="mob-nav-drawer-link" data-mob-nav-close><span class="mob-nav-drawer-num">02</span>Photos</a>
         <a href="#videos" class="mob-nav-drawer-link" data-mob-nav-close><span class="mob-nav-drawer-num">03</span>Videos</a>
         <div class="mob-nav-drawer-foot">Rekha World</div>
@@ -602,15 +849,15 @@
 
     <nav class="navbar">
         <ul class="nav-links">
-            <li><a href="Untitled-1.html" class="active">Welcome</a></li>
+            <li><a href="#welcome" class="active">Welcome</a></li>
             <li><a href="#photos">Photos</a></li>
             <li><a href="#videos">Videos</a></li>
         </ul>
     </nav>
 
-    <div class="page2-container">
-        <audio id="bg-audio" loop>
-            <source src="Gallery/Videos/devadeva.mp3" type="audio/mp3">
+    <div class="page2-container" id="welcome">
+        <audio id="bg-audio" loop preload="none">
+            <source src="Gallery/Videos/devadeva.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
 
@@ -630,22 +877,22 @@
     <section id="photos" class="photos-section">
         <div class="tv-scene reveal" id="tv-scene">
             <div class="tv-screen" id="tv-screen">
-                <div class="carousel-slide active" data-title="A Winter Evening in Gangtok"><div class="slide-fg" style="background-image:url('Gallery/Photos/074_-_Copy.JPG')"></div></div>
-                <div class="carousel-slide" data-title="A Quiet Afternoon"><div class="slide-fg" style="background-image:url('Gallery/Photos/20210307_115922.jpg')"></div></div>
-                <div class="carousel-slide" data-title="Dressed for a Celebration"><div class="slide-fg" style="background-image:url('Gallery/Photos/20241121_212238.jpg')"></div></div>
-                <div class="carousel-slide" data-title="Golden Hour with the Children"><div class="slide-fg" style="background-image:url('Gallery/Photos/DSCN0151.JPG')"></div></div>
-                <div class="carousel-slide" data-title="At Home, At Ease"><div class="slide-fg" style="background-image:url('Gallery/Photos/EJMLE0219.JPG')"></div></div>
-                <div class="carousel-slide" data-title="A Snowy Adventure Together"><div class="slide-fg" style="background-image:url('Gallery/Photos/IMG_3386.jpg')"></div></div>
-                <div class="carousel-slide" data-title="Grace on Every Step"><div class="slide-fg" style="background-image:url('Gallery/Photos/IMG_20221125_155230_1.jpg')"></div></div>
-                <div class="carousel-slide" data-title="Timeless Elegance"><div class="slide-fg" style="background-image:url('Gallery/Photos/IMG-20211130-WA0056.jpg')"></div></div>
-                <div class="carousel-slide" data-title="A Festive Evening"><div class="slide-fg" style="background-image:url('Gallery/Photos/IMG-20211210-WA0064.jpg')"></div></div>
-                <div class="carousel-slide" data-title="Radiant in Blue"><div class="slide-fg" style="background-image:url('Gallery/Photos/IMG-20211214-WA0061.jpg')"></div></div>
-                <div class="carousel-slide" data-title="Together, Always"><div class="slide-fg" style="background-image:url('Gallery/Photos/Screenshot_2020-06-19-07-55-23-1.png')"></div></div>
-                <div class="carousel-slide" data-title="Christmas Warmth"><div class="slide-fg" style="background-image:url('Gallery/Photos/upscalemedia-transformed.jpeg')"></div></div>
-                <div class="carousel-slide" data-title="A Walk Among the Trees"><div class="slide-fg" style="background-image:url('Gallery/Photos/WhatsApp_Image_2022-12-27_at_9_48_02_PM__1_.jpeg')"></div></div>
-                <div class="carousel-slide" data-title="Mother & Daughter"><div class="slide-fg" style="background-image:url('Gallery/Photos/WhatsApp_Image_2022-12-27_at_9_48_36_PM__1_.jpeg')"></div></div>
-                <div class="carousel-slide" data-title="Surrounded by Green"><div class="slide-fg" style="background-image:url('Gallery/Photos/WhatsApp_Image_2024-09-16_at_22_32_38_d9b44276.jpg')"></div></div>
-                <div class="carousel-slide" data-title="A Road Well Walked"><div class="slide-fg" style="background-image:url('Gallery/Photos/WhatsApp_Image_2025-01-04_at_23_00_08_e909fd66.jpg')"></div></div>
+                <div class="carousel-slide active" data-title="A Winter Evening in Gangtok"><div class="slide-fg" data-bg="Gallery/Photos/074_-_Copy.JPG"></div></div>
+                <div class="carousel-slide" data-title="A Quiet Afternoon"><div class="slide-fg" data-bg="Gallery/Photos/20210307_115922.jpg"></div></div>
+                <div class="carousel-slide" data-title="Dressed for a Celebration"><div class="slide-fg" data-bg="Gallery/Photos/20241121_212238.jpg"></div></div>
+                <div class="carousel-slide" data-title="Golden Hour with the Children"><div class="slide-fg" data-bg="Gallery/Photos/DSCN0151.JPG"></div></div>
+                <div class="carousel-slide" data-title="At Home, At Ease"><div class="slide-fg" data-bg="Gallery/Photos/EJMLE0219.JPG"></div></div>
+                <div class="carousel-slide" data-title="A Snowy Adventure Together"><div class="slide-fg" data-bg="Gallery/Photos/IMG_3386.jpg"></div></div>
+                <div class="carousel-slide" data-title="Grace on Every Step"><div class="slide-fg" data-bg="Gallery/Photos/IMG_20221125_155230_1.jpg"></div></div>
+                <div class="carousel-slide" data-title="Timeless Elegance"><div class="slide-fg" data-bg="Gallery/Photos/IMG-20211130-WA0056.jpg"></div></div>
+                <div class="carousel-slide" data-title="A Festive Evening"><div class="slide-fg" data-bg="Gallery/Photos/IMG-20211210-WA0064.jpg"></div></div>
+                <div class="carousel-slide" data-title="Radiant in Blue"><div class="slide-fg" data-bg="Gallery/Photos/IMG-20211214-WA0061.jpg"></div></div>
+                <div class="carousel-slide" data-title="Together, Always"><div class="slide-fg" data-bg="Gallery/Photos/Screenshot_2020-06-19-07-55-23-1.png"></div></div>
+                <div class="carousel-slide" data-title="Christmas Warmth"><div class="slide-fg" data-bg="Gallery/Photos/upscalemedia-transformed.jpeg"></div></div>
+                <div class="carousel-slide" data-title="A Walk Among the Trees"><div class="slide-fg" data-bg="Gallery/Photos/WhatsApp_Image_2022-12-27_at_9_48_02_PM__1_.jpeg"></div></div>
+                <div class="carousel-slide" data-title="Mother & Daughter"><div class="slide-fg" data-bg="Gallery/Photos/WhatsApp_Image_2022-12-27_at_9_48_36_PM__1_.jpeg"></div></div>
+                <div class="carousel-slide" data-title="Surrounded by Green"><div class="slide-fg" data-bg="Gallery/Photos/WhatsApp_Image_2024-09-16_at_22_32_38_d9b44276.jpg"></div></div>
+                <div class="carousel-slide" data-title="A Road Well Walked"><div class="slide-fg" data-bg="Gallery/Photos/WhatsApp_Image_2025-01-04_at_23_00_08_e909fd66.jpg"></div></div>
 
                 <div class="tv-view-overlay" id="tv-view-overlay">
                     <div class="tv-power-orb">
@@ -675,22 +922,22 @@
             <span id="progress-total">16</span>
         </div>
         <div class="thumb-strip" id="thumb-strip">
-            <div class="thumb active" data-index="0"><img src="Gallery/Photos/074_-_Copy.JPG" alt="Thumbnail 1"></div>
-            <div class="thumb" data-index="1"><img src="Gallery/Photos/20210307_115922.jpg" alt="Thumbnail 2"></div>
-            <div class="thumb" data-index="2"><img src="Gallery/Photos/20241121_212238.jpg" alt="Thumbnail 3"></div>
-            <div class="thumb" data-index="3"><img src="Gallery/Photos/DSCN0151.JPG" alt="Thumbnail 4"></div>
-            <div class="thumb" data-index="4"><img src="Gallery/Photos/EJMLE0219.JPG" alt="Thumbnail 5"></div>
-            <div class="thumb" data-index="5"><img src="Gallery/Photos/IMG_3386.jpg" alt="Thumbnail 6"></div>
-            <div class="thumb" data-index="6"><img src="Gallery/Photos/IMG_20221125_155230_1.jpg" alt="Thumbnail 7"></div>
-            <div class="thumb" data-index="7"><img src="Gallery/Photos/IMG-20211130-WA0056.jpg" alt="Thumbnail 8"></div>
-            <div class="thumb" data-index="8"><img src="Gallery/Photos/IMG-20211210-WA0064.jpg" alt="Thumbnail 9"></div>
-            <div class="thumb" data-index="9"><img src="Gallery/Photos/IMG-20211214-WA0061.jpg" alt="Thumbnail 10"></div>
-            <div class="thumb" data-index="10"><img src="Gallery/Photos/Screenshot_2020-06-19-07-55-23-1.png" alt="Thumbnail 11"></div>
-            <div class="thumb" data-index="11"><img src="Gallery/Photos/upscalemedia-transformed.jpeg" alt="Thumbnail 12"></div>
-            <div class="thumb" data-index="12"><img src="Gallery/Photos/WhatsApp_Image_2022-12-27_at_9_48_02_PM__1_.jpeg" alt="Thumbnail 13"></div>
-            <div class="thumb" data-index="13"><img src="Gallery/Photos/WhatsApp_Image_2022-12-27_at_9_48_36_PM__1_.jpeg" alt="Thumbnail 14"></div>
-            <div class="thumb" data-index="14"><img src="Gallery/Photos/WhatsApp_Image_2024-09-16_at_22_32_38_d9b44276.jpg" alt="Thumbnail 15"></div>
-            <div class="thumb" data-index="15"><img src="Gallery/Photos/WhatsApp_Image_2025-01-04_at_23_00_08_e909fd66.jpg" alt="Thumbnail 16"></div>
+            <div class="thumb active" data-index="0"><img data-src="Gallery/Photos/074_-_Copy.JPG" alt="Thumbnail 1" width="74" height="52" decoding="async"></div>
+            <div class="thumb" data-index="1"><img data-src="Gallery/Photos/20210307_115922.jpg" alt="Thumbnail 2" width="74" height="52" decoding="async"></div>
+            <div class="thumb" data-index="2"><img data-src="Gallery/Photos/20241121_212238.jpg" alt="Thumbnail 3" width="74" height="52" decoding="async"></div>
+            <div class="thumb" data-index="3"><img data-src="Gallery/Photos/DSCN0151.JPG" alt="Thumbnail 4" width="74" height="52" decoding="async"></div>
+            <div class="thumb" data-index="4"><img data-src="Gallery/Photos/EJMLE0219.JPG" alt="Thumbnail 5" width="74" height="52" decoding="async"></div>
+            <div class="thumb" data-index="5"><img data-src="Gallery/Photos/IMG_3386.jpg" alt="Thumbnail 6" width="74" height="52" decoding="async"></div>
+            <div class="thumb" data-index="6"><img data-src="Gallery/Photos/IMG_20221125_155230_1.jpg" alt="Thumbnail 7" width="74" height="52" decoding="async"></div>
+            <div class="thumb" data-index="7"><img data-src="Gallery/Photos/IMG-20211130-WA0056.jpg" alt="Thumbnail 8" width="74" height="52" decoding="async"></div>
+            <div class="thumb" data-index="8"><img data-src="Gallery/Photos/IMG-20211210-WA0064.jpg" alt="Thumbnail 9" width="74" height="52" decoding="async"></div>
+            <div class="thumb" data-index="9"><img data-src="Gallery/Photos/IMG-20211214-WA0061.jpg" alt="Thumbnail 10" width="74" height="52" decoding="async"></div>
+            <div class="thumb" data-index="10"><img data-src="Gallery/Photos/Screenshot_2020-06-19-07-55-23-1.png" alt="Thumbnail 11" width="74" height="52" decoding="async"></div>
+            <div class="thumb" data-index="11"><img data-src="Gallery/Photos/upscalemedia-transformed.jpeg" alt="Thumbnail 12" width="74" height="52" decoding="async"></div>
+            <div class="thumb" data-index="12"><img data-src="Gallery/Photos/WhatsApp_Image_2022-12-27_at_9_48_02_PM__1_.jpeg" alt="Thumbnail 13" width="74" height="52" decoding="async"></div>
+            <div class="thumb" data-index="13"><img data-src="Gallery/Photos/WhatsApp_Image_2022-12-27_at_9_48_36_PM__1_.jpeg" alt="Thumbnail 14" width="74" height="52" decoding="async"></div>
+            <div class="thumb" data-index="14"><img data-src="Gallery/Photos/WhatsApp_Image_2024-09-16_at_22_32_38_d9b44276.jpg" alt="Thumbnail 15" width="74" height="52" decoding="async"></div>
+            <div class="thumb" data-index="15"><img data-src="Gallery/Photos/WhatsApp_Image_2025-01-04_at_23_00_08_e909fd66.jpg" alt="Thumbnail 16" width="74" height="52" decoding="async"></div>
         </div>
     </section>
 
@@ -700,17 +947,17 @@
             <div class="projector-screen" id="projector-screen">
 
                 <div class="video-slide active" data-title="Birthday Celebrations, 2023–2024">
-                    <video class="cine-video" playsinline preload="auto">
+                    <video class="cine-video" playsinline preload="none">
                         <source src="Gallery/Videos/MOM_Birthady_2023-2024.mp4" type="video/mp4">
                     </video>
                 </div>
                 <div class="video-slide" data-title="Birthday Celebrations, 2024–25">
-                    <video class="cine-video" playsinline preload="auto">
+                    <video class="cine-video" playsinline preload="none">
                         <source src="Gallery/Videos/Mom_birthday_2024-25.mp4" type="video/mp4">
                     </video>
                 </div>
                 <div class="video-slide" data-title="A Trip Back to the '90s">
-                    <video class="cine-video" playsinline preload="auto">
+                    <video class="cine-video" playsinline preload="none">
                         <source src="Gallery/Videos/Rekha_90s_Trend.mp4" type="video/mp4">
                     </video>
                 </div>
@@ -765,10 +1012,23 @@
 
         function toggleAudio() {
             if (audio.paused) {
-                audio.play();
+                var p = audio.play();
+                if (p && p.catch) { p.catch(function () {
+                    audioBtn.innerHTML = "&#9654;";
+                    audioBtn.title = "Play Music";
+                }); }
                 audioBtn.innerHTML = "&#10074;&#10074;";
                 audioBtn.title = "Pause Music";
             } else {
+                audio.pause();
+                audioBtn.innerHTML = "&#9654;";
+                audioBtn.title = "Play Music";
+            }
+        }
+
+        /* When any video starts playing, the background song stops so the two never overlap. */
+        function pauseBackgroundMusic() {
+            if (!audio.paused) {
                 audio.pause();
                 audioBtn.innerHTML = "&#9654;";
                 audioBtn.title = "Play Music";
@@ -784,8 +1044,31 @@
         const totalSlides = slides.length;
         document.getElementById('progress-total').textContent = String(totalSlides).padStart(2, '0');
 
+        /* Photos are loaded on demand: only the current slide and its two neighbours,
+           and only once the gallery is near the screen (or opened). */
+        let slidesEnabled = false;
+        function loadSlide(i) {
+            const slide = slides[(i + totalSlides) % totalSlides];
+            const fg = slide && slide.querySelector('.slide-fg');
+            if (fg && fg.dataset.bg && !fg.dataset.loaded) {
+                fg.style.backgroundImage = 'url("' + fg.dataset.bg + '")';
+                fg.dataset.loaded = '1';
+            }
+        }
+        function enableSlides() {
+            slidesEnabled = true;
+            loadSlide(currentIndex); loadSlide(currentIndex + 1); loadSlide(currentIndex - 1);
+        }
+        function loadThumbs() {
+            thumbs.forEach(t => {
+                const img = t.querySelector('img');
+                if (img && img.dataset.src && !img.getAttribute('src')) { img.src = img.dataset.src; }
+            });
+        }
+
         function goToSlide(index) {
             currentIndex = (index + totalSlides) % totalSlides;
+            if (slidesEnabled) { loadSlide(currentIndex); loadSlide(currentIndex + 1); loadSlide(currentIndex - 1); }
             slides.forEach((slide, i) => slide.classList.toggle('active', i === currentIndex));
             thumbs.forEach((thumb, i) => thumb.classList.toggle('active', i === currentIndex));
             const activeThumb = thumbs[currentIndex];
@@ -937,38 +1220,140 @@
             document.getElementById('thumb-strip')
         ];
 
+        /* Cinema-style open / close.
+           The screen grows (or shrinks) by animating its real size and position, so the picture is never
+           stretched or squashed on the way. The room lights dim as the screen opens, and rise again with a
+           soft projector glow as it closes. */
+        /* Pick the open / close style: 'zoom' (default) or 'glide' (the screen grows and shrinks in size). */
+        const SCREEN_ANIMATION = 'zoom';
+
+        function sceneDim(scene) {
+            if (!scene) return null;
+            let dim = scene.querySelector('.scene-dim');
+            if (!dim) { dim = document.createElement('div'); dim.className = 'scene-dim'; scene.insertBefore(dim, scene.firstChild); }
+            return dim;
+        }
+
+        /* 'zoom': the picture rushes out of the TV towards you and softly dissolves,
+           and on closing it pulls back into the TV, which glows back to life. No stretching at any point. */
+        function zoomScreen(el, scene, mode, home, done) {
+            const D = mode === 'open' ? 850 : 700;
+            const full = { left: '0px', top: '0px', width: window.innerWidth + 'px', height: window.innerHeight + 'px' };
+            const homePx = { left: home.left + 'px', top: home.top + 'px', width: home.width + 'px', height: home.height + 'px' };
+            const put = o => { el.style.left = o.left; el.style.top = o.top; el.style.width = o.width; el.style.height = o.height; };
+            const cx = home.left + home.width / 2, cy = home.top + home.height / 2;
+            /* The full-size picture, shrunk until it sits exactly inside the TV's own screen.
+               Opening starts from it and closing ends on it, so the TV never goes blank and nothing blinks. */
+            const small = 'scale(' + Math.min(home.width / window.innerWidth, home.height / window.innerHeight) + ')';
+            const dim = sceneDim(scene);
+
+            el.style.transition = 'none';
+            el.style.transformOrigin = cx + 'px ' + cy + 'px';
+            put(full);
+            el.style.transform = mode === 'open' ? small : 'scale(1)';
+            if (dim) { dim.style.transition = 'none'; dim.style.opacity = mode === 'open' ? '0' : '0.65'; }
+            void el.offsetWidth;
+
+            el.style.transition = 'transform ' + D + 'ms ' + (mode === 'open' ? 'cubic-bezier(0.22, 1, 0.36, 1)' : 'cubic-bezier(0.65, 0, 0.35, 1)');
+            el.style.transform = mode === 'open' ? 'scale(1)' : small;
+            if (dim && mode === 'open') { dim.style.transition = 'opacity ' + D + 'ms ease'; dim.style.opacity = '0.65'; }
+
+            setTimeout(() => {
+                el.style.transition = '';
+                el.style.transform = '';
+                el.style.transformOrigin = '';
+                if (mode === 'open') {
+                    el.style.left = '0'; el.style.top = '0';
+                    el.style.width = '100vw'; el.style.height = '100vh'; el.style.height = '100dvh';
+                    done();
+                } else {
+                    /* Back in its own spot; the room lights come up and a soft glow fades out */
+                    put(homePx);
+                    el.style.boxShadow = '0 0 60px 6px rgba(232, 207, 160, 0.5)';
+                    void el.offsetWidth;
+                    el.style.transition = 'box-shadow 700ms ease';
+                    el.style.boxShadow = '0 0 0 0 rgba(232, 207, 160, 0)';
+                    if (dim) { dim.style.transition = 'opacity 700ms ease'; dim.style.opacity = '0'; }
+                    setTimeout(() => {
+                        el.style.transition = '';
+                        el.style.boxShadow = '';
+                        if (dim) { dim.style.transition = ''; }
+                        done();
+                    }, 720);
+                }
+            }, D + 30);
+        }
+
+        function morphScreen(el, scene, mode, home, done) {
+            if (SCREEN_ANIMATION === 'zoom') { zoomScreen(el, scene, mode, home, done); return; }
+            const D = mode === 'open' ? 900 : 850;
+            const EASE = 'cubic-bezier(0.65, 0, 0.35, 1)';
+            const full = { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight };
+            const px = r => ({ left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
+            const from = mode === 'open' ? home : full;
+            const to = mode === 'open' ? full : home;
+            const put = o => { el.style.left = o.left; el.style.top = o.top; el.style.width = o.width; el.style.height = o.height; };
+
+            el.style.transition = 'none';
+            put(px(from));
+            el.style.boxShadow = '0 0 0 0 rgba(232, 207, 160, 0)';
+            let dim = null;
+            if (scene) {
+                dim = scene.querySelector('.scene-dim');
+                if (!dim) { dim = document.createElement('div'); dim.className = 'scene-dim'; scene.insertBefore(dim, scene.firstChild); }
+                dim.style.transition = 'none'; dim.style.opacity = mode === 'open' ? '0' : '0.65';
+            }
+            void el.offsetWidth;
+
+            el.style.transition = ['left', 'top', 'width', 'height'].map(p => p + ' ' + D + 'ms ' + EASE).join(', ') +
+                ', box-shadow ' + D + 'ms ease';
+            put(px(to));
+            el.style.boxShadow = mode === 'close' ? '0 0 70px 6px rgba(232, 207, 160, 0.55)' : '0 0 50px 4px rgba(232, 207, 160, 0.3)';
+            if (dim) {
+                dim.style.transition = 'opacity ' + D + 'ms ease';
+                dim.style.opacity = mode === 'open' ? '0.65' : '0';
+            }
+
+            let finished = false;
+            function finish() {
+                if (finished) return; finished = true;
+                el.removeEventListener('transitionend', onEnd);
+                el.style.transition = '';
+                el.style.boxShadow = '';
+                if (mode === 'open') {
+                    el.style.left = '0'; el.style.top = '0';
+                    el.style.width = '100vw'; el.style.height = '100vh'; el.style.height = '100dvh';
+                } else if (dim) {
+                    dim.style.transition = ''; dim.style.opacity = '0';
+                }
+                done();
+            }
+            function onEnd(e) { if (e.target === el && e.propertyName === 'width') finish(); }
+            el.addEventListener('transitionend', onEnd);
+            setTimeout(finish, D + 250);
+        }
+
+        function returnOverlay(overlay) {
+            overlay.style.display = 'flex';
+            overlay.classList.remove('overlay-return');
+            void overlay.offsetWidth;
+            overlay.classList.add('overlay-return');
+            setTimeout(() => overlay.classList.remove('overlay-return'), 1000);
+        }
+
         let tvHomeRect = null;
         let tvExpanded = false;
 
         function expandTV() {
             if (tvExpanded) return;
             tvExpanded = true;
+            enableSlides();
+            loadThumbs();
             lockPageScroll();
             tvHomeRect = tvScreen.getBoundingClientRect();
             tvViewOverlay.style.display = 'none';
-            tvScreen.classList.add('tv-fullscreen');
-            tvScreen.style.left = '0';
-            tvScreen.style.top = '0';
-            tvScreen.style.width = '100vw';
-            tvScreen.style.height = '100vh';
-            tvScreen.style.height = '100dvh';
-
-            const scaleX = tvHomeRect.width / window.innerWidth;
-            const scaleY = tvHomeRect.height / window.innerHeight;
-            tvScreen.style.transition = 'none';
-            tvScreen.style.transform = `translate(${tvHomeRect.left}px, ${tvHomeRect.top}px) scale(${scaleX}, ${scaleY})`;
-            void tvScreen.offsetWidth;
-
-            requestAnimationFrame(() => {
-                tvScreen.style.transition = 'transform 0.9s cubic-bezier(0.4, 0, 0.2, 1)';
-                tvScreen.style.transform = 'translate(0px, 0px) scale(1, 1)';
-            });
-
-            tvScreen.addEventListener('transitionend', function handler(e) {
-                if (e.propertyName !== 'transform') return;
-                tvScreen.removeEventListener('transitionend', handler);
-                tvScreen.style.transition = '';
-                tvScreen.style.transform = '';
+            tvScreen.classList.add('tv-fullscreen', 'positioned');
+            morphScreen(tvScreen, tvScene, 'open', tvHomeRect, () => {
                 tvCloseBtn.classList.add('visible');
                 tvFullscreenBtn.classList.add('visible');
                 fullscreenEls.forEach(el => el.classList.add('visible'));
@@ -977,25 +1362,17 @@
 
         function collapseTV() {
             if (!tvExpanded || !tvHomeRect) return;
-            if (isFullscreenActive()) { toggleFullscreen(); }
+            /* In full screen, the cross only leaves full screen and stays in the TV view;
+               press it again to close the TV. */
+            if (isFullscreenActive()) { toggleFullscreen(); return; }
             tvCloseBtn.classList.remove('visible');
             tvFullscreenBtn.classList.remove('visible');
             fullscreenEls.forEach(el => el.classList.remove('visible'));
-
-            const scaleX = tvHomeRect.width / window.innerWidth;
-            const scaleY = tvHomeRect.height / window.innerHeight;
-            tvScreen.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-            tvScreen.style.transform = `translate(${tvHomeRect.left}px, ${tvHomeRect.top}px) scale(${scaleX}, ${scaleY})`;
-
-            tvScreen.addEventListener('transitionend', function handler(e) {
-                if (e.propertyName !== 'transform') return;
-                tvScreen.removeEventListener('transitionend', handler);
+            morphScreen(tvScreen, tvScene, 'close', tvHomeRect, () => {
                 tvScreen.classList.remove('tv-fullscreen');
-                tvScreen.style.transition = '';
-                tvScreen.style.transform = '';
                 tvExpanded = false;
                 unlockPageScroll();
-                tvViewOverlay.style.display = 'flex';
+                returnOverlay(tvViewOverlay);
                 positionTVScreen();
             });
         }
@@ -1041,6 +1418,7 @@
             tvScreen.style.top = ((PCT.top / 100) * dispH - offsetY) + 'px';
             tvScreen.style.width = ((PCT.width / 100) * dispW) + 'px';
             tvScreen.style.height = ((PCT.height / 100) * dispH) + 'px';
+            tvScreen.classList.add('positioned');
         }
 
         positionTVScreen();
@@ -1098,6 +1476,7 @@
 
             const newVideo = currentVideoEl();
             if (newVideo) {
+                if (newVideo.preload === 'none') { newVideo.preload = 'metadata'; }
                 if (newVideo.readyState === 0) { newVideo.load(); }
                 newVideo.currentTime = 0;
                 updateSeekUI();
@@ -1142,11 +1521,13 @@
             timeTotalEl.textContent = hasDuration ? formatTime(video.duration) : '0:00';
         }
 
-        function seekToClientX(clientX) {
+        function seekToClientX(clientX, clientY) {
             const video = currentVideoEl();
             if (!video || !isFinite(video.duration) || video.duration <= 0) return;
             const rect = seekTrack.getBoundingClientRect();
-            const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+            const ratio = rotatedFS
+                ? Math.max(0, Math.min(1, (clientY - rect.top) / rect.height))
+                : Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
             video.currentTime = ratio * video.duration;
             updateSeekUI();
         }
@@ -1156,12 +1537,12 @@
             e.stopPropagation();
             isDraggingSeek = true;
             seekTrack.setPointerCapture(e.pointerId);
-            seekToClientX(e.clientX);
+            seekToClientX(e.clientX, e.clientY);
             showVideoUI();
         });
         seekTrack.addEventListener('pointermove', (e) => {
             if (!isDraggingSeek) return;
-            seekToClientX(e.clientX);
+            seekToClientX(e.clientX, e.clientY);
             showVideoUI();
         });
         seekTrack.addEventListener('pointerup', (e) => {
@@ -1177,13 +1558,13 @@
         seekTrack.addEventListener('touchstart', (e) => {
             e.stopPropagation();
             isTouchSeeking = true;
-            if (e.touches && e.touches[0]) { seekToClientX(e.touches[0].clientX); }
+            if (e.touches && e.touches[0]) { seekToClientX(e.touches[0].clientX, e.touches[0].clientY); }
             showVideoUI();
         }, { passive: true });
         seekTrack.addEventListener('touchmove', (e) => {
             if (!isTouchSeeking) return;
             e.preventDefault();
-            if (e.touches && e.touches[0]) { seekToClientX(e.touches[0].clientX); }
+            if (e.touches && e.touches[0]) { seekToClientX(e.touches[0].clientX, e.touches[0].clientY); }
             showVideoUI();
         }, { passive: false });
         seekTrack.addEventListener('touchend', () => { isTouchSeeking = false; });
@@ -1193,7 +1574,7 @@
             const v = slide.querySelector('video');
             v.addEventListener('timeupdate', () => { if (v === currentVideoEl()) updateSeekUI(); });
             v.addEventListener('loadedmetadata', () => { if (v === currentVideoEl()) updateSeekUI(); });
-            v.addEventListener('play', () => { if (v === currentVideoEl()) { showVideoUI(); } });
+            v.addEventListener('play', () => { pauseBackgroundMusic(); if (v === currentVideoEl()) { showVideoUI(); } });
             v.addEventListener('pause', () => { if (v === currentVideoEl()) { showVideoUI(); } });
         });
 
@@ -1221,7 +1602,7 @@
         nextVideoBtn.addEventListener('click', (e) => { e.stopPropagation(); goToVideo(currentVideoIndex + 1, true); showVideoUI(); });
 
         addSwipeNavigation(projScreen, {
-            getActive: () => projExpanded,
+            getActive: () => projExpanded && !rotatedFS,
             getSlideEl: () => videoSlides[currentVideoIndex],
             onPrev: () => { goToVideo(currentVideoIndex - 1, true); showVideoUI(); },
             onNext: () => { goToVideo(currentVideoIndex + 1, true); showVideoUI(); },
@@ -1230,6 +1611,17 @@
 
         let manualFullscreenActive = false;
         let manualFullscreenTarget = null;
+        var rotatedFS = false;
+
+        /* Turns the video player sideways only when the phone is held upright. */
+        function applyRotation() {
+            const should = manualFullscreenActive && manualFullscreenTarget === videosSection &&
+                window.innerWidth <= 1024 && window.innerHeight > window.innerWidth;
+            videosSection.classList.toggle('rot-fullscreen', should);
+            rotatedFS = should;
+        }
+        window.addEventListener('resize', applyRotation);
+        window.addEventListener('orientationchange', () => setTimeout(applyRotation, 200));
 
         function isFullscreenActive() {
             return !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement || manualFullscreenActive);
@@ -1253,7 +1645,19 @@
             requestAnimationFrame(() => { pin(); requestAnimationFrame(pin); });
         }
 
+        /* On phones that allow it (Android), full screen on the videos also turns the screen to landscape. */
+        function syncOrientationLock() {
+            try {
+                const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+                if (window.innerWidth <= 1024 && screen.orientation && screen.orientation.lock) {
+                    if (fsEl === videosSection) { screen.orientation.lock('landscape').catch(() => {}); }
+                    else if (screen.orientation.unlock) { screen.orientation.unlock(); }
+                }
+            } catch (_) {}
+        }
+
         function handleFullscreenChange() {
+            syncOrientationLock();
             updateFullscreenIcon();
             if (!isFullscreenActive()) { restoreScrollAfterFullscreen(); }
         }
@@ -1267,6 +1671,7 @@
             manualFullscreenActive = true;
             manualFullscreenTarget = el;
             el.classList.add('manual-fullscreen');
+            applyRotation();
             updateFullscreenIcon();
             window.scrollTo(0, 1);
         }
@@ -1275,6 +1680,7 @@
             if (manualFullscreenTarget) { manualFullscreenTarget.classList.remove('manual-fullscreen'); }
             manualFullscreenTarget = null;
             manualFullscreenActive = false;
+            applyRotation();
             updateFullscreenIcon();
             restoreScrollAfterFullscreen();
         }
@@ -1331,27 +1737,8 @@
             lockPageScroll();
             projHomeRect = projScreen.getBoundingClientRect();
             projViewOverlay.style.display = 'none';
-            projScreen.classList.add('proj-fullscreen');
-            projScreen.style.left = '0';
-            projScreen.style.top = '0';
-            projScreen.style.width = '100vw';
-            projScreen.style.height = '100vh';
-            projScreen.style.height = '100dvh';
-
-            const scaleX = projHomeRect.width / window.innerWidth;
-            const scaleY = projHomeRect.height / window.innerHeight;
-            projScreen.style.transition = 'none';
-            projScreen.style.transform = `translate(${projHomeRect.left}px, ${projHomeRect.top}px) scale(${scaleX}, ${scaleY})`;
-            void projScreen.offsetWidth;
-
-            requestAnimationFrame(() => {
-                projScreen.style.transition = 'transform 0.9s cubic-bezier(0.4, 0, 0.2, 1)';
-                projScreen.style.transform = 'translate(0px, 0px) scale(1, 1)';
-            });
-
-            projScreen.addEventListener('transitionend', function handler(e) {
-                if (e.propertyName !== 'transform') return;
-                projScreen.removeEventListener('transitionend', handler);
+            projScreen.classList.add('proj-fullscreen', 'positioned');
+            morphScreen(projScreen, projScene, 'open', projHomeRect, () => {
                 projCloseBtn.classList.add('visible');
                 projFullscreenEls.forEach(el => el.classList.add('visible'));
                 goToVideo(currentVideoIndex, false);
@@ -1361,30 +1748,22 @@
 
         function collapseProjector() {
             if (!projExpanded || !projHomeRect) return;
+            /* In full screen, the cross only leaves full screen and stays in the screening view;
+               press it again to close it. */
+            if (isFullscreenActive()) { toggleFullscreen(); showVideoUI(); return; }
             const video = currentVideoEl();
             if (video) { video.pause(); }
             updatePlayIcon(false);
-            if (isFullscreenActive()) { toggleFullscreen(); }
             clearTimeout(uiHideTimer);
             document.body.classList.remove('hide-video-ui');
             document.body.classList.remove('hide-video-text');
             projCloseBtn.classList.remove('visible');
             projFullscreenEls.forEach(el => el.classList.remove('visible'));
-
-            const scaleX = projHomeRect.width / window.innerWidth;
-            const scaleY = projHomeRect.height / window.innerHeight;
-            projScreen.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-            projScreen.style.transform = `translate(${projHomeRect.left}px, ${projHomeRect.top}px) scale(${scaleX}, ${scaleY})`;
-
-            projScreen.addEventListener('transitionend', function handler(e) {
-                if (e.propertyName !== 'transform') return;
-                projScreen.removeEventListener('transitionend', handler);
+            morphScreen(projScreen, projScene, 'close', projHomeRect, () => {
                 projScreen.classList.remove('proj-fullscreen');
-                projScreen.style.transition = '';
-                projScreen.style.transform = '';
                 projExpanded = false;
                 unlockPageScroll();
-                projViewOverlay.style.display = 'flex';
+                returnOverlay(projViewOverlay);
                 positionProjectorScreen();
             });
         }
@@ -1421,6 +1800,7 @@
             projScreen.style.top = ((PROJ_SCREEN_PCT.top / 100) * dispH - offsetY) + 'px';
             projScreen.style.width = ((PROJ_SCREEN_PCT.width / 100) * dispW) + 'px';
             projScreen.style.height = ((PROJ_SCREEN_PCT.height / 100) * dispH) + 'px';
+            projScreen.classList.add('positioned');
         }
 
         positionProjectorScreen();
@@ -1454,17 +1834,76 @@
             });
         }, {threshold: 0.05});
         document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        /* Heavy scene backgrounds (TV room, projector room) load only when they are about to be scrolled into view */
+        (function () {
+            const scenes = [document.getElementById('tv-scene'), document.getElementById('projector-scene')];
+            function turnOn(scene) {
+                scene.classList.add('bg-on');
+                if (scene === tvScene) { enableSlides(); }
+            }
+            if (!('IntersectionObserver' in window)) { scenes.forEach(turnOn); return; }
+            const nearObserver = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) { turnOn(entry.target); nearObserver.unobserve(entry.target); }
+                });
+            }, { rootMargin: '600px 0px' });
+            scenes.forEach(sc => nearObserver.observe(sc));
+        })();
+
+        /* Navigation (phone menu + Welcome / Photos / Videos links) */
         const mobHam = document.getElementById('mob-ham');
         const mobNavDrawer = document.getElementById('mob-nav-drawer');
+
+        function toggleMobNav(open) {
+            if (!mobHam || !mobNavDrawer) return;
+            mobHam.classList.toggle('open', open);
+            mobHam.setAttribute('aria-expanded', open ? 'true' : 'false');
+            mobNavDrawer.classList.toggle('open', open);
+            document.body.style.overflow = open ? 'hidden' : '';
+        }
         if (mobHam && mobNavDrawer) {
-            function toggleMobNav(open) {
-                mobHam.classList.toggle('open', open);
-                mobNavDrawer.classList.toggle('open', open);
-                document.body.style.overflow = open ? 'hidden' : '';
-            }
             mobHam.addEventListener('click', () => toggleMobNav(!mobNavDrawer.classList.contains('open')));
-            document.querySelectorAll('[data-mob-nav-close]').forEach(el => {
-                el.addEventListener('click', () => toggleMobNav(false));
+            /* Pre-load the menu background quietly once the page is idle, so opening the menu is instant */
+            const warm = () => mobNavDrawer.classList.add('warm');
+            window.addEventListener('load', () => {
+                if (window.matchMedia('(max-width: 1024px)').matches) {
+                    if ('requestIdleCallback' in window) { requestIdleCallback(warm, { timeout: 4000 }); }
+                    else { setTimeout(warm, 2500); }
+                }
+            });
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', e => {
+                const target = document.getElementById(link.getAttribute('href').slice(1));
+                if (!target) return;
+                e.preventDefault();
+                const go = () => {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    try { history.replaceState(null, '', '#' + target.id); } catch (_) {}
+                };
+                if (mobNavDrawer && mobNavDrawer.classList.contains('open')) {
+                    toggleMobNav(false);
+                    setTimeout(go, 80);
+                } else { go(); }
+            });
+        });
+
+        /* Highlight the menu item of the section currently on screen */
+        if ('IntersectionObserver' in window) {
+            const spy = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    const id = '#' + entry.target.id;
+                    document.querySelectorAll('.nav-links a, .mob-nav-drawer-link').forEach(a => {
+                        a.classList.toggle('active', a.getAttribute('href') === id);
+                    });
+                });
+            }, { threshold: 0.5 });
+            ['welcome', 'photos', 'videos'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) spy.observe(el);
             });
         }
     </script>
